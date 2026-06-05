@@ -203,13 +203,40 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* Right side: Mock Code Editor Panel */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        className="w-full md:w-[50%] max-w-lg glass-panel rounded-2xl border border-border-subtle shadow-2xl overflow-hidden flex flex-col h-96 relative z-10"
-      >
+      {/* Right side: Profile Photo + Code Editor Panel */}
+      <div className="w-full md:w-[50%] max-w-lg flex flex-col items-center gap-5 relative z-10">
+
+        {/* Profile Photo Avatar */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.15 }}
+          className="relative"
+        >
+          {/* Outer glow ring */}
+          <div className="absolute -inset-2 rounded-full bg-gradient-to-br from-accent-primary/40 to-accent-secondary/20 blur-lg animate-pulse pointer-events-none" />
+          {/* Photo circle */}
+          <div className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden border-4 border-accent-primary/60 shadow-2xl ring-4 ring-accent-primary/20">
+            <img
+              src="/avatar.jpg"
+              alt="Yishaq Damtew - Full Stack Developer"
+              className="w-full h-full object-cover object-top"
+            />
+          </div>
+          {/* Open to Work badge */}
+          <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-3 py-1 bg-emerald-500/90 backdrop-blur-sm rounded-full shadow-lg border border-emerald-400/30">
+            <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
+            <span className="text-[10px] font-bold text-white uppercase tracking-wider whitespace-nowrap">Open to Work</span>
+          </div>
+        </motion.div>
+
+        {/* Mock Code Editor Panel */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="w-full glass-panel rounded-2xl border border-border-subtle shadow-2xl overflow-hidden flex flex-col h-80"
+        >
         {/* Editor Toolbar Header */}
         <div className="flex items-center justify-between px-4 py-3 bg-bg-site/60 border-b border-border-subtle">
           {/* OS Window Actions */}
@@ -330,6 +357,7 @@ export default function Hero() {
           )}
         </div>
       </motion.div>
+      </div>
     </section>
   );
 }
