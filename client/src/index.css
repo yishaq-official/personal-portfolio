@@ -1,1 +1,205 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
 @import "tailwindcss";
+
+@theme {
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-secondary: var(--accent-secondary);
+  --color-accent-glow: var(--accent-glow);
+  --color-bg-site: var(--bg-site);
+  --color-bg-card: var(--bg-card);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-border-subtle: var(--border-subtle);
+  
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-mono: 'Fira Code', ui-monospace, monospace;
+}
+
+/* ==========================================================================
+   Theme variables & Custom Accents
+   ========================================================================== */
+:root {
+  --bg-site: #f8fafc; /* Slate 50 */
+  --bg-card: rgba(255, 255, 255, 0.7);
+  --text-primary: #0f172a; /* Slate 900 */
+  --text-secondary: #475569; /* Slate 600 */
+  --border-subtle: rgba(226, 232, 240, 0.8); /* Slate 200 */
+  
+  /* Default: Violet Theme */
+  --accent-primary: #8b5cf6;
+  --accent-secondary: #a78bfa;
+  --accent-glow: rgba(139, 92, 246, 0.12);
+}
+
+html.dark {
+  --bg-site: #080c14; /* Deep premium midnight dark */
+  --bg-card: rgba(15, 23, 42, 0.65); /* Slate 900 base */
+  --text-primary: #f1f5f9; /* Slate 100 */
+  --text-secondary: #94a3b8; /* Slate 400 */
+  --border-subtle: rgba(51, 65, 85, 0.45); /* Slate 700 */
+  
+  /* Default dark: Violet Theme */
+  --accent-primary: #a78bfa;
+  --accent-secondary: #c084fc;
+  --accent-glow: rgba(167, 139, 250, 0.15);
+}
+
+/* Accent overrides - Indigo */
+html[data-accent="indigo"] {
+  --accent-primary: #4f46e5;
+  --accent-secondary: #6366f1;
+  --accent-glow: rgba(79, 70, 229, 0.12);
+}
+html.dark[data-accent="indigo"] {
+  --accent-primary: #818cf8;
+  --accent-secondary: #a5b4fc;
+  --accent-glow: rgba(129, 140, 248, 0.15);
+}
+
+/* Accent overrides - Emerald */
+html[data-accent="emerald"] {
+  --accent-primary: #059669;
+  --accent-secondary: #10b981;
+  --accent-glow: rgba(5, 150, 105, 0.12);
+}
+html.dark[data-accent="emerald"] {
+  --accent-primary: #34d399;
+  --accent-secondary: #6ee7b7;
+  --accent-glow: rgba(52, 211, 153, 0.15);
+}
+
+/* Accent overrides - Rose */
+html[data-accent="rose"] {
+  --accent-primary: #e11d48;
+  --accent-secondary: #f43f5e;
+  --accent-glow: rgba(225, 29, 72, 0.12);
+}
+html.dark[data-accent="rose"] {
+  --accent-primary: #fb7185;
+  --accent-secondary: #fda4af;
+  --accent-glow: rgba(251, 113, 133, 0.15);
+}
+
+/* Accent overrides - Amber */
+html[data-accent="amber"] {
+  --accent-primary: #d97706;
+  --accent-secondary: #f59e0b;
+  --accent-glow: rgba(217, 119, 6, 0.12);
+}
+html.dark[data-accent="amber"] {
+  --accent-primary: #fbbf24;
+  --accent-secondary: #fcd34d;
+  --accent-glow: rgba(251, 191, 36, 0.15);
+}
+
+/* Accent overrides - Violet */
+html[data-accent="violet"] {
+  --accent-primary: #7c3aed;
+  --accent-secondary: #8b5cf6;
+  --accent-glow: rgba(124, 58, 237, 0.12);
+}
+html.dark[data-accent="violet"] {
+  --accent-primary: #a78bfa;
+  --accent-secondary: #c084fc;
+  --accent-glow: rgba(167, 139, 250, 0.15);
+}
+
+/* ==========================================================================
+   Base Styles & Scrollbar Customization
+   ========================================================================== */
+body {
+  background-color: var(--bg-site);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-site);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-primary);
+}
+
+/* Custom selection */
+::selection {
+  background-color: var(--accent-glow);
+  color: var(--accent-primary);
+}
+
+/* ==========================================================================
+   Utilities & Animations
+   ========================================================================== */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Floating custom cursor container */
+.custom-cursor {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--accent-primary);
+  background-color: var(--accent-glow);
+  border-radius: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  transition: width 0.2s, height 0.2s, background-color 0.2s;
+}
+
+.custom-cursor-hover {
+  width: 44px;
+  height: 44px;
+  background-color: rgba(var(--accent-primary), 0.1);
+  border-color: var(--accent-secondary);
+}
+
+/* CLI Text cursor blink */
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.cli-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 15px;
+  background-color: var(--accent-primary);
+  animation: blink 1s step-end infinite;
+}
+
+/* Mesh Backdrop Grid Animation */
+@keyframes moveMesh {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-40px); }
+}
+
+.mesh-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, var(--border-subtle) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border-subtle) 1px, transparent 1px);
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+  animation: moveMesh 8s linear infinite;
+}
