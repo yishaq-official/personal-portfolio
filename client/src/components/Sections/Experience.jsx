@@ -46,21 +46,33 @@ export default function Experience() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/experience')
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3000);
+
+    fetch('http://localhost:5000/api/experience', { signal: controller.signal })
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch experiences API');
         return res.json();
       })
       .then((data) => {
+        clearTimeout(timeoutId);
         if (Array.isArray(data) && data.length > 0) {
           setExperiences(data);
         }
         setLoading(false);
       })
       .catch((err) => {
-        console.warn('Experience endpoint failed, serving local fallback data:', err.message);
+        clearTimeout(timeoutId);
+        if (err.name !== 'AbortError') {
+          console.warn('Experience endpoint failed, serving local fallback data:', err.message);
+        }
         setLoading(false);
       });
+
+    return () => {
+      clearTimeout(timeoutId);
+      controller.abort();
+    };
   }, []);
 
   // Track expanded cards
@@ -115,7 +127,7 @@ export default function Experience() {
                 <div
                   onClick={() => toggleExpand(exp.id)}
                   className={`glass-panel p-5 sm:p-6 rounded-2xl border transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer ${
-                    isExpanded ? 'border-accent-border/40' : 'border-border-subtle hover:border-accent-primary/50'
+                    isExpanded ? 'border-accent-primary/40' : 'border-border-subtle hover:border-accent-primary/50'
                   }`}
                 >
                   {/* Header Information */}

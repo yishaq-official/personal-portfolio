@@ -13,25 +13,23 @@ function App() {
 
   return (
     <Layout onOpenAdmin={() => setAdminOpen(true)}>
-      <div className="flex flex-col space-y-12">
-        {/* Hero Section */}
-        <Hero />
+      {/* Hero Section */}
+      <Hero />
 
-        {/* About Section */}
-        <About />
+      {/* About Section */}
+      <About />
 
-        {/* Experience Section */}
-        <Experience />
+      {/* Experience Section */}
+      <Experience />
 
-        {/* Projects Gallery Section */}
-        <Projects />
+      {/* Projects Gallery Section */}
+      <Projects />
 
-        {/* Contact Form Section */}
-        <Contact />
+      {/* Contact Form Section */}
+      <Contact />
 
-        {/* Terminal CLI Section */}
-        <Terminal onAdminTrigger={() => setAdminOpen(true)} />
-      </div>
+      {/* Terminal CLI Section */}
+      <Terminal onAdminTrigger={() => setAdminOpen(true)} />
 
       {/* System Administration Console Overlay */}
       <AdminPanel isOpen={adminOpen} onClose={() => setAdminOpen(false)} />

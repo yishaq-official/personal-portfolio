@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Award, Briefcase, Code, Cloud } from 'lucide-react';
+import { Award, Briefcase, Code, Cloud, Server } from 'lucide-react';
 
 export default function About() {
   const [activeTab, setActiveTab] = useState('Frontend');
@@ -29,6 +29,12 @@ export default function About() {
       { name: 'Docker / Containers', level: 70 },
       { name: 'Linux OS / Bash', level: 80 },
       { name: 'Figma / UI Design', level: 75 },
+    ],
+    Cloud: [
+      { name: 'AWS (EC2, S3, Lambda)', level: 65 },
+      { name: 'Docker & Docker Compose', level: 75 },
+      { name: 'CI/CD Pipelines', level: 70 },
+      { name: 'Nginx / Reverse Proxy', level: 68 },
     ]
   };
 

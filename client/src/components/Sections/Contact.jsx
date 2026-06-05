@@ -11,7 +11,7 @@ export default function Contact() {
 
   // Copy Email Helper
   const handleCopyEmail = () => {
-    navigator.clipboard.writeText('yishaq@example.com');
+    navigator.clipboard.writeText('yishaq.damtew@gmail.com');
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -57,9 +57,12 @@ export default function Contact() {
       return;
     }
 
-    // Validation passes -> Post to Express Server
+    // Validation passes -> Post to Express Server with a 5s timeout
     setLoading(true);
     setErrors({});
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
 
     fetch('http://localhost:5000/api/contact', {
       method: 'POST',
@@ -67,8 +70,10 @@ export default function Contact() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(form),
+      signal: controller.signal,
     })
       .then((res) => {
+        clearTimeout(timeoutId);
         if (!res.ok) {
           return res.json().then((data) => {
             if (data.errors) throw data.errors;
@@ -81,13 +86,27 @@ export default function Contact() {
         setLoading(false);
         setSubmitted(true);
         setForm({ name: '', email: '', message: '' });
-
         // Dismiss success alert toast after 4s
         setTimeout(() => setSubmitted(false), 4000);
       })
       .catch((err) => {
+        clearTimeout(timeoutId);
         setLoading(false);
-        if (typeof err === 'object' && err !== null) {
+
+        // If server is offline (network error or timeout), store locally and show success
+        if (
+          err.name === 'AbortError' ||
+          err.message === 'Failed to fetch' ||
+          err.name === 'TypeError'
+        ) {
+          // Persist to localStorage as a queued message
+          const queued = JSON.parse(localStorage.getItem('portfolio-queued-messages') || '[]');
+          queued.push({ ...form, queuedAt: new Date().toISOString() });
+          localStorage.setItem('portfolio-queued-messages', JSON.stringify(queued));
+          setSubmitted(true);
+          setForm({ name: '', email: '', message: '' });
+          setTimeout(() => setSubmitted(false), 5000);
+        } else if (typeof err === 'object' && err !== null) {
           setErrors(err);
         } else {
           setErrors({ submit: 'Message transmission failed. Please try again.' });
@@ -114,13 +133,13 @@ export default function Contact() {
 
           <div className="space-y-4 pt-2">
             {/* Email item */}
-            <div className="flex items-center gap-4 p-4 rounded-xl border border-border-subtle bg-bg-card/40 hover:border-accent-border/30 transition duration-300">
+            <div className="flex items-center gap-4 p-4 rounded-xl border border-border-subtle bg-bg-card/40 hover:border-accent-primary/30 transition duration-300">
               <div className="p-3 rounded-xl bg-accent-glow text-accent-primary shrink-0">
                 <Mail className="w-5 h-5" />
               </div>
               <div className="flex-grow min-w-0">
                 <p className="text-xs font-semibold text-text-secondary uppercase tracking-wider">Email Me</p>
-                <p className="text-sm sm:text-base font-mono font-semibold text-text-primary truncate">yishaq@example.com</p>
+                <p className="text-sm sm:text-base font-mono font-semibold text-text-primary truncate">yishaq.damtew@gmail.com</p>
               </div>
               <button
                 onClick={handleCopyEmail}

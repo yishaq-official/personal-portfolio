@@ -49,7 +49,8 @@ export default function AdminPanel({ isOpen, onClose }) {
     features: '',
     challenges: '',
     demoUrl: '',
-    sourceUrl: ''
+    sourceUrl: '',
+    imageSlides: ''
   });
 
   const [experienceFormOpen, setExperienceFormOpen] = useState(false);
@@ -156,7 +157,10 @@ export default function AdminPanel({ isOpen, onClose }) {
         features: Array.isArray(proj.features) ? proj.features.join('\n') : '',
         challenges: proj.challenges || '',
         demoUrl: proj.demoUrl || '',
-        sourceUrl: proj.sourceUrl || ''
+        sourceUrl: proj.sourceUrl || '',
+        imageSlides: Array.isArray(proj.images)
+          ? proj.images.map(img => img.gradient || '').filter(Boolean).join(', ')
+          : ''
       });
     } else {
       setEditingProject(null);
@@ -169,7 +173,8 @@ export default function AdminPanel({ isOpen, onClose }) {
         features: '',
         challenges: '',
         demoUrl: '',
-        sourceUrl: ''
+        sourceUrl: '',
+        imageSlides: ''
       });
     }
     setProjectFormOpen(true);
@@ -179,13 +184,19 @@ export default function AdminPanel({ isOpen, onClose }) {
     e.preventDefault();
     setActionLoading(true);
 
+    // Parse imageSlides: comma-separated gradient strings like "from-violet-500 to-indigo-600"
+    const slideGradients = projectForm.imageSlides
+      ? projectForm.imageSlides.split(',').map(g => g.trim()).filter(Boolean)
+      : [];
+    const images = slideGradients.length > 0
+      ? slideGradients.map((gradient, i) => ({ title: `Preview ${i + 1}`, gradient }))
+      : [{ title: 'Workspace Preview', gradient: 'from-violet-500 to-indigo-600' }];
+
     const payload = {
       ...projectForm,
       tags: projectForm.tags.split(',').map(t => t.trim()).filter(Boolean),
       features: projectForm.features.split('\n').map(f => f.trim()).filter(Boolean),
-      images: [
-        { title: 'Workspace Preview', gradient: 'from-violet-500 to-indigo-600' }
-      ]
+      images,
     };
 
     const url = editingProject 
@@ -357,7 +368,7 @@ export default function AdminPanel({ isOpen, onClose }) {
               {/* Header */}
               <div className="flex items-center justify-between p-6 border-b border-border-subtle bg-bg-card/80 backdrop-blur-xl">
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-2xl bg-accent-glow border border-accent-border/20 text-accent-primary">
+                  <div className="p-2.5 rounded-2xl bg-accent-glow border border-accent-primary/20 text-accent-primary">
                     <Lock className="w-5 h-5" />
                   </div>
                   <div>
@@ -515,7 +526,7 @@ export default function AdminPanel({ isOpen, onClose }) {
                               </h3>
                               <button
                                 onClick={() => handleOpenProjectForm()}
-                                className="flex items-center gap-1.5 py-2 px-4 bg-accent-glow hover:bg-accent-primary/20 text-accent-primary border border-accent-border/30 rounded-xl text-xs font-semibold transition cursor-pointer"
+                                className="flex items-center gap-1.5 py-2 px-4 bg-accent-glow hover:bg-accent-primary/20 text-accent-primary border border-accent-primary/30 rounded-xl text-xs font-semibold transition cursor-pointer"
                               >
                                 <Plus className="w-4 h-4" />
                                 Add Project
@@ -534,7 +545,7 @@ export default function AdminPanel({ isOpen, onClose }) {
                                     <div>
                                       <h4 className="font-bold text-text-primary text-base">{proj.title}</h4>
                                       <div className="flex items-center gap-2 mt-1">
-                                        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-accent-glow border border-accent-border/20 text-accent-primary uppercase tracking-wide">
+                                        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-accent-glow border border-accent-primary/20 text-accent-primary uppercase tracking-wide">
                                           {proj.category}
                                         </span>
                                         <span className="text-xs text-text-secondary font-sans font-medium line-clamp-1 max-w-md">
@@ -573,7 +584,7 @@ export default function AdminPanel({ isOpen, onClose }) {
                               </h3>
                               <button
                                 onClick={() => handleOpenExperienceForm()}
-                                className="flex items-center gap-1.5 py-2 px-4 bg-accent-glow hover:bg-accent-primary/20 text-accent-primary border border-accent-border/30 rounded-xl text-xs font-semibold transition cursor-pointer"
+                                className="flex items-center gap-1.5 py-2 px-4 bg-accent-glow hover:bg-accent-primary/20 text-accent-primary border border-accent-primary/30 rounded-xl text-xs font-semibold transition cursor-pointer"
                               >
                                 <Plus className="w-4 h-4" />
                                 Add Milestone
@@ -592,7 +603,7 @@ export default function AdminPanel({ isOpen, onClose }) {
                                     <div>
                                       <h4 className="font-bold text-text-primary text-base">{exp.role}</h4>
                                       <div className="flex flex-wrap items-center gap-2 mt-1">
-                                        <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-accent-glow border border-accent-border/20 text-accent-primary uppercase tracking-wide">
+                                        <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-accent-glow border border-accent-primary/20 text-accent-primary uppercase tracking-wide">
                                           {exp.type}
                                         </span>
                                         <span className="text-xs font-bold text-text-primary font-mono">{exp.company}</span>
@@ -797,6 +808,18 @@ export default function AdminPanel({ isOpen, onClose }) {
                           placeholder="Feature 1&#10;Feature 2"
                           className="w-full bg-bg-site/60 border border-border-subtle focus:border-accent-primary rounded-xl px-3 py-2 text-text-primary text-xs outline-none transition resize-none"
                         />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-semibold text-text-secondary uppercase mb-1.5 select-none">Image Slides (Comma-separated gradients)</label>
+                        <input
+                          type="text"
+                          value={projectForm.imageSlides}
+                          onChange={(e) => setProjectForm({ ...projectForm, imageSlides: e.target.value })}
+                          placeholder="from-violet-500 to-indigo-600, from-emerald-500 to-teal-600"
+                          className="w-full bg-bg-site/60 border border-border-subtle focus:border-accent-primary rounded-xl px-3 py-2 text-text-primary text-xs outline-none transition"
+                        />
+                        <p className="text-[10px] text-text-secondary mt-1 font-mono">Each gradient creates one carousel slide. Leave blank for default.</p>
                       </div>
 
                       <div>

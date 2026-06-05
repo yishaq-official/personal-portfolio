@@ -71,21 +71,33 @@ export default function Projects() {
   const filters = ['All', 'Frontend', 'Backend', 'Fullstack', 'CLI'];
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/projects')
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3000);
+
+    fetch('http://localhost:5000/api/projects', { signal: controller.signal })
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch projects API');
         return res.json();
       })
       .then((data) => {
+        clearTimeout(timeoutId);
         if (Array.isArray(data) && data.length > 0) {
           setProjects(data);
         }
         setLoading(false);
       })
       .catch((err) => {
-        console.warn('Projects endpoint failed, serving local fallback data:', err.message);
+        clearTimeout(timeoutId);
+        if (err.name !== 'AbortError') {
+          console.warn('Projects endpoint failed, serving local fallback data:', err.message);
+        }
         setLoading(false);
       });
+
+    return () => {
+      clearTimeout(timeoutId);
+      controller.abort();
+    };
   }, []);
 
   // Filtering Logic

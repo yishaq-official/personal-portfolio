@@ -171,7 +171,7 @@ export default function ProjectModal({ project, onClose }) {
                 {project.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="px-3 py-1 bg-accent-glow border border-accent-border/20 text-accent-primary text-xs font-semibold rounded-full uppercase tracking-wider"
+                    className="px-3 py-1 bg-accent-glow border border-accent-primary/20 text-accent-primary text-xs font-semibold rounded-full uppercase tracking-wider"
                   >
                     {tag}
                   </span>

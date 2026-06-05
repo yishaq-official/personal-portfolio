@@ -67,8 +67,10 @@ export default function Terminal({ onAdminTrigger }) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 pl-2 text-xs sm:text-sm">
               <div><span className="text-accent-secondary font-semibold">about</span> - Background summary</div>
               <div><span className="text-accent-secondary font-semibold">skills</span> - Core skillset details</div>
-              <div><span className="text-accent-secondary font-semibold">experience</span> - Job & Education timeline</div>
-              <div><span className="text-accent-secondary font-semibold">contact</span> - direct links & profiles</div>
+              <div><span className="text-accent-secondary font-semibold">experience</span> - Job &amp; Education timeline</div>
+              <div><span className="text-accent-secondary font-semibold">projects</span> - List all projects</div>
+              <div><span className="text-accent-secondary font-semibold">contact</span> - direct links &amp; profiles</div>
+              <div><span className="text-accent-secondary font-semibold">resume</span> - Download resume hint</div>
               <div><span className="text-accent-secondary font-semibold">theme [light/dark]</span> - Shift website theme</div>
               <div><span className="text-accent-secondary font-semibold">accent [color]</span> - Select new accent</div>
               <div><span className="text-accent-secondary font-semibold">clear</span> - Flush terminal screen</div>
@@ -109,9 +111,35 @@ export default function Terminal({ onAdminTrigger }) {
       case 'contact':
         outputText = (
           <div className="space-y-1">
-            <p><span className="text-accent-secondary">Email:</span>    yishaq@example.com</p>
+            <p><span className="text-accent-secondary">Email:</span>    yishaq.damtew@gmail.com</p>
             <p><span className="text-accent-secondary">GitHub:</span>   github.com/yishaq</p>
             <p><span className="text-accent-secondary">LinkedIn:</span> linkedin.com/in/yishaq</p>
+          </div>
+        );
+        break;
+
+      case 'projects':
+        outputText = (
+          <div className="space-y-1">
+            <p className="text-accent-primary font-bold">Featured Projects:</p>
+            <div className="pl-2 space-y-0.5 text-xs sm:text-sm">
+              <p><span className="text-accent-secondary font-semibold">[01]</span> Dev Shell Terminal — CLI</p>
+              <p><span className="text-accent-secondary font-semibold">[02]</span> Cloud Metrics Panel — Frontend</p>
+              <p><span className="text-accent-secondary font-semibold">[03]</span> REST GraphQL Engine — Backend</p>
+              <p><span className="text-accent-secondary font-semibold">[04]</span> Agile Kanban Board — Fullstack</p>
+            </div>
+            <p className="text-text-secondary text-xs pt-1">→ Scroll to #projects or click <span className="text-accent-primary cursor-pointer" onClick={() => { const el = document.querySelector('#projects'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }}>Projects Section</span> to view details.</p>
+          </div>
+        );
+        break;
+
+      case 'resume':
+        outputText = (
+          <div className="space-y-1">
+            <p className="text-accent-primary font-bold">Resume / CV:</p>
+            <p className="text-text-secondary text-sm">Contact me directly to request the latest version:</p>
+            <p><span className="text-accent-secondary">Email:</span> yishaq.damtew@gmail.com</p>
+            <p className="text-text-secondary text-xs pt-1">Or visit the Contact section below to send a direct message.</p>
           </div>
         );
         break;
