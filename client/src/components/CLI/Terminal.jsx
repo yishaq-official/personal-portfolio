@@ -8,7 +8,7 @@ export default function Terminal() {
   
   // Terminal logs state: each log is { type: 'input' | 'output', text: string | JSX }
   const [logs, setLogs] = useState([
-    { type: 'output', text: 'Welcome to DevPortfolio OS v1.0.0 (x86_64-pc-linux-gnu)' },
+    { type: 'output', text: 'Welcome to Yishaq OS v1.0.0 (x86_64-pc-linux-gnu)' },
     { type: 'output', text: "Type 'help' to see the list of available commands." },
     { type: 'output', text: '' }
   ]);
@@ -78,7 +78,7 @@ export default function Terminal() {
         break;
 
       case 'about':
-        outputText = 'John Doe is a software engineer specialized in React 19, Node.js, and Postgres databases. He designs beautiful, fast, and accessible digital products from the ground up.';
+        outputText = 'Yishaq Damtew is a software engineer specialized in React 19, Node.js, and Postgres databases. He designs beautiful, fast, and accessible digital products from the ground up.';
         break;
 
       case 'skills':
@@ -199,7 +199,7 @@ export default function Terminal() {
           </div>
           <span className="text-xs font-mono font-semibold text-text-secondary flex items-center gap-1.5">
             <TerminalIcon className="w-3.5 h-3.5 text-accent-primary" />
-            guest@dev-portfolio:~
+            guest@yishaq.dev:~
           </span>
           <div className="w-12" /> {/* Balancing spacing spacer */}
         </div>
@@ -213,7 +213,7 @@ export default function Terminal() {
             <div key={idx} className="whitespace-pre-wrap">
               {log.type === 'input' ? (
                 <div className="flex">
-                  <span className="text-accent-secondary mr-2">guest@dev-portfolio:~$</span>
+                  <span className="text-accent-secondary mr-2">guest@yishaq.dev:~$</span>
                   <span className="text-text-primary">{log.text}</span>
                 </div>
               ) : (
@@ -224,7 +224,7 @@ export default function Terminal() {
 
           {/* Prompt Entry Input Line */}
           <div className="flex items-center">
-            <span className="text-accent-secondary mr-2 shrink-0">guest@dev-portfolio:~$</span>
+            <span className="text-accent-secondary mr-2 shrink-0">guest@yishaq.dev:~$</span>
             <input
               ref={inputRef}
               type="text"

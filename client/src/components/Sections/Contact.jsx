@@ -57,18 +57,42 @@ export default function Contact() {
       return;
     }
 
-    // Validation passes -> Trigger Loading Simulation
+    // Validation passes -> Post to Express Server
     setLoading(true);
     setErrors({});
 
-    setTimeout(() => {
-      setLoading(false);
-      setSubmitted(true);
-      setForm({ name: '', email: '', message: '' });
+    fetch('http://localhost:5000/api/contact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(form),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((data) => {
+            if (data.errors) throw data.errors;
+            throw new Error('Server returned an error');
+          });
+        }
+        return res.json();
+      })
+      .then(() => {
+        setLoading(false);
+        setSubmitted(true);
+        setForm({ name: '', email: '', message: '' });
 
-      // Dismiss success alert toast after 4s
-      setTimeout(() => setSubmitted(false), 4000);
-    }, 1200);
+        // Dismiss success alert toast after 4s
+        setTimeout(() => setSubmitted(false), 4000);
+      })
+      .catch((err) => {
+        setLoading(false);
+        if (typeof err === 'object' && err !== null) {
+          setErrors(err);
+        } else {
+          setErrors({ submit: 'Message transmission failed. Please try again.' });
+        }
+      });
   };
 
   return (
@@ -216,6 +240,17 @@ export default function Contact() {
               </button>
 
               <AnimatePresence>
+                {errors.submit && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    className="p-4 bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl flex items-center gap-2.5 text-sm font-semibold"
+                  >
+                    <AlertCircle className="w-5 h-5 text-red-400 shrink-0" />
+                    <span>{errors.submit}</span>
+                  </motion.div>
+                )}
                 {submitted && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}

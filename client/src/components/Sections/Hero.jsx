@@ -46,9 +46,9 @@ export default function Hero() {
 
   const rawCodeContent = {
     'Bio.json': `{
-  "name": "John Doe",
+  "name": "Yishaq Damtew",
   "title": "Full Stack Engineer",
-  "location": "San Francisco, CA",
+  "location": "Addis Ababa, Ethiopia",
   "experience": "3+ Years",
   "openToWork": true,
   "motto": "Build clean, solve complex."
@@ -112,7 +112,7 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold tracking-tight text-text-primary"
         >
-          Hi, I'm <span className="text-gradient">John Doe</span>
+          Hi, I'm <span className="text-gradient">Yishaq Damtew</span>
         </motion.h1>
 
         <motion.div
@@ -206,13 +206,13 @@ export default function Hero() {
               <span className="text-gray-500 dark:text-gray-600">// Bio.json</span>
               <div>{"{"}</div>
               <div className="pl-5">
-                <span className="text-accent-primary">"name"</span>: <span className="text-accent-secondary">"John Doe"</span>,
+                <span className="text-accent-primary">"name"</span>: <span className="text-accent-secondary">"Yishaq Damtew"</span>,
               </div>
               <div className="pl-5">
                 <span className="text-accent-primary">"title"</span>: <span className="text-accent-secondary">"Full Stack Engineer"</span>,
               </div>
               <div className="pl-5">
-                <span className="text-accent-primary">"location"</span>: <span className="text-accent-secondary">"San Francisco, CA"</span>,
+                <span className="text-accent-primary">"location"</span>: <span className="text-accent-secondary">"Addis Ababa, Ethiopia"</span>,
               </div>
               <div className="pl-5">
                 <span className="text-accent-primary">"experience"</span>: <span className="text-accent-secondary">"3+ Years"</span>,

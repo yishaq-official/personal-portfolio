@@ -67,7 +67,7 @@ export default function Footer() {
         {/* Info */}
         <div className="text-center md:text-left space-y-2">
           <p className="text-sm text-text-secondary">
-            &copy; {currentYear} DevPortfolio. All rights reserved.
+            &copy; {currentYear} yishaq.dev. All rights reserved.
           </p>
           <p className="text-xs text-text-secondary">
             Handcrafted with React 19, Tailwind v4 & Custom CSS variables.
