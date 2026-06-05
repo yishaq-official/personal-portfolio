@@ -76,7 +76,7 @@ export default function Header({ onOpenSettings }) {
           onClick={(e) => handleLinkClick(e, '#home')}
           className="text-xl font-display font-extrabold tracking-tight text-text-primary hover:opacity-85 transition-opacity"
         >
-          Dev<span className="text-gradient">Portfolio</span>
+          yishaq<span className="text-gradient">.dev</span>
         </a>
 
         {/* Desktop Navigation Links */}
