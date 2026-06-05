@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, MapPin, Copy, Check, Send, AlertCircle } from 'lucide-react';
+import { apiUrl } from '../../lib/api.js';
 
 export default function Contact() {
   const [copied, setCopied] = useState(false);
@@ -64,7 +65,7 @@ export default function Contact() {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-    fetch('http://localhost:5000/api/contact', {
+    fetch(apiUrl('/api/contact'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -133,7 +134,7 @@ export default function Contact() {
 
           <div className="space-y-4 pt-2">
             {/* Email item */}
-            <div className="flex items-center gap-4 p-4 rounded-xl border border-border-subtle bg-bg-card/40 hover:border-accent-primary/30 transition duration-300">
+            <div className="premium-card glass-panel flex items-center gap-4 p-4 rounded-xl border border-border-subtle hover:border-accent-primary/30 transition duration-300">
               <div className="p-3 rounded-xl bg-accent-glow text-accent-primary shrink-0">
                 <Mail className="w-5 h-5" />
               </div>
@@ -151,7 +152,7 @@ export default function Contact() {
             </div>
 
             {/* Location item */}
-            <div className="flex items-center gap-4 p-4 rounded-xl border border-border-subtle bg-bg-card/40">
+            <div className="premium-card glass-panel flex items-center gap-4 p-4 rounded-xl border border-border-subtle">
               <div className="p-3 rounded-xl bg-accent-glow text-accent-primary shrink-0">
                 <MapPin className="w-5 h-5" />
               </div>
@@ -164,7 +165,7 @@ export default function Contact() {
         </div>
 
         {/* Right Column: Submission Form card */}
-        <div className="w-full lg:w-[60%] glass-panel border border-border-subtle rounded-2xl p-6 sm:p-8 space-y-6">
+        <div className="w-full lg:w-[60%] hero-panel border border-border-subtle rounded-2xl p-6 sm:p-8 space-y-6 overflow-hidden">
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Name input */}
             <div className="relative pt-2 w-full">

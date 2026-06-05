@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Sun, Moon, Eye, EyeOff, LayoutGrid, Sparkles } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext.jsx';

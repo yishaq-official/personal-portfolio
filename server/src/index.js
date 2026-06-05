@@ -5,9 +5,13 @@ const { Project, Experience, Message } = require('./models');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:5173')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
 // Enable CORS and JSON body parser
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
 
 // In-Memory Database Fallbacks

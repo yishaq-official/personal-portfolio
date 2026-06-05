@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Award, Briefcase, Code, Cloud, Server } from 'lucide-react';
+import { Award, Briefcase, Code } from 'lucide-react';
 
 export default function About() {
   const [activeTab, setActiveTab] = useState('Frontend');
@@ -67,7 +67,7 @@ export default function About() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className="glass-panel p-4 rounded-xl border border-border-subtle flex flex-col items-center justify-center text-center space-y-2"
+                className="premium-card glass-panel p-4 rounded-xl border border-border-subtle flex flex-col items-center justify-center text-center space-y-2"
               >
                 <div className="p-2 rounded-xl bg-accent-glow">
                   {stat.icon}
@@ -84,7 +84,7 @@ export default function About() {
         </div>
 
         {/* Right Column: Skills Panel */}
-        <div className="w-full lg:w-[55%] glass-panel rounded-2xl border border-border-subtle p-6 sm:p-8 space-y-6">
+        <div className="w-full lg:w-[55%] hero-panel rounded-2xl border border-border-subtle p-6 sm:p-8 space-y-6 overflow-hidden">
           <div className="flex items-center justify-between border-b border-border-subtle pb-4">
             <h3 className="text-lg font-display font-bold text-text-primary flex items-center gap-2">
               <Code className="w-5 h-5 text-accent-primary" />
@@ -92,7 +92,7 @@ export default function About() {
             </h3>
             
             {/* Category Tab selectors */}
-            <div className="flex space-x-1">
+            <div className="glass-panel flex space-x-1 p-1 rounded-xl">
               {Object.keys(skillsData).map((cat) => (
                 <button
                   key={cat}
@@ -112,7 +112,7 @@ export default function About() {
           {/* Active Skills List */}
           <div className="space-y-5">
             {skillsData[activeTab].map((skill, idx) => (
-              <div key={skill.name} className="space-y-2">
+              <div key={skill.name} className="premium-card rounded-xl border border-border-subtle/50 bg-bg-site/35 p-4 space-y-2">
                 <div className="flex justify-between items-center text-sm font-medium">
                   <span className="text-text-primary font-sans">{skill.name}</span>
                   <span className="text-accent-primary font-mono">{skill.level}%</span>

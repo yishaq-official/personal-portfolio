@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { useTheme } from '../../context/ThemeContext.jsx';
 
@@ -32,19 +32,25 @@ export default function CustomCursor() {
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseenter', handleMouseEnter);
 
+    const handleClickableEnter = () => setHovered(true);
+    const handleClickableLeave = () => setHovered(false);
+    let observedClickables = [];
+
     // Clickable hover listener
     const addHoverListeners = () => {
       const clickables = document.querySelectorAll(
         'a, button, select, input, textarea, [role="button"], .cursor-pointer'
       );
-      
+
+      observedClickables.forEach((el) => {
+        el.removeEventListener('mouseenter', handleClickableEnter);
+        el.removeEventListener('mouseleave', handleClickableLeave);
+      });
+
+      observedClickables = Array.from(clickables);
       clickables.forEach((el) => {
-        // Remove existing to avoid double binding
-        el.removeEventListener('mouseenter', () => setHovered(true));
-        el.removeEventListener('mouseleave', () => setHovered(false));
-        
-        el.addEventListener('mouseenter', () => setHovered(true));
-        el.addEventListener('mouseleave', () => setHovered(false));
+        el.addEventListener('mouseenter', handleClickableEnter);
+        el.addEventListener('mouseleave', handleClickableLeave);
       });
     };
 
@@ -58,6 +64,10 @@ export default function CustomCursor() {
       window.removeEventListener('mousemove', moveCursor);
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseenter', handleMouseEnter);
+      observedClickables.forEach((el) => {
+        el.removeEventListener('mouseenter', handleClickableEnter);
+        el.removeEventListener('mouseleave', handleClickableLeave);
+      });
       observer.disconnect();
     };
   }, [showCursor, mouseX, mouseY]);

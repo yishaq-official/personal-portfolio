@@ -1,44 +1,48 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Terminal, Copy, Check, ArrowRight } from 'lucide-react';
+import { Terminal, Copy, Check, ArrowRight, Sparkles, Layers3, Gauge, MapPin } from 'lucide-react';
+
+const phrases = [
+  'Full Stack Web Developer',
+  'UI/UX Interface Builder',
+  'Problem Solver & Tech Thinker'
+];
+
+const heroStats = [
+  { label: 'Experience', value: '3+ yrs', icon: Gauge },
+  { label: 'Projects', value: '20+', icon: Layers3 },
+  { label: 'Base', value: 'Addis Ababa', icon: MapPin },
+];
 
 export default function Hero() {
   // 1. Typewriter Subtitles Effect
-  const phrases = [
-    "Full Stack Web Developer",
-    "UI/UX Interface Builder",
-    "Problem Solver & Tech Thinker"
-  ];
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
-  const [typingSpeed, setTypingSpeed] = useState(100);
 
   useEffect(() => {
-    let timer;
     const currentPhrase = phrases[phraseIndex];
-    
-    if (isDeleting) {
-      timer = setTimeout(() => {
-        setDisplayText(currentPhrase.substring(0, displayText.length - 1));
-        setTypingSpeed(40); // Deletes faster
-      }, typingSpeed);
-    } else {
-      timer = setTimeout(() => {
-        setDisplayText(currentPhrase.substring(0, displayText.length + 1));
-        setTypingSpeed(90);
-      }, typingSpeed);
-    }
+    let timer;
 
     if (!isDeleting && displayText === currentPhrase) {
       timer = setTimeout(() => setIsDeleting(true), 1800); // Wait before delete
     } else if (isDeleting && displayText === '') {
-      setIsDeleting(false);
-      setPhraseIndex((prev) => (prev + 1) % phrases.length);
+      timer = setTimeout(() => {
+        setIsDeleting(false);
+        setPhraseIndex((prev) => (prev + 1) % phrases.length);
+      }, 120);
+    } else {
+      timer = setTimeout(() => {
+        setDisplayText((prev) => (
+          isDeleting
+            ? currentPhrase.substring(0, prev.length - 1)
+            : currentPhrase.substring(0, prev.length + 1)
+        ));
+      }, isDeleting ? 40 : 90);
     }
 
     return () => clearTimeout(timer);
-  }, [displayText, isDeleting, phraseIndex, typingSpeed]);
+  }, [displayText, isDeleting, phraseIndex]);
 
   // 2. Interactive Code Panel Tabs State
   const [activeTab, setActiveTab] = useState('Bio.json');
@@ -90,19 +94,19 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative w-full py-16 md:py-28 flex flex-col md:flex-row items-center justify-between gap-12"
+      className="relative w-full py-16 md:py-24 lg:py-28 flex flex-col md:flex-row items-center justify-between gap-12 lg:gap-16"
     >
       {/* Left side: Tagline & CTAs */}
-      <div className="w-full md:w-[50%] flex flex-col space-y-6 text-left">
+      <div className="w-full md:w-[50%] flex flex-col space-y-7 text-left">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-3 py-1 bg-accent-glow border border-border-subtle rounded-full w-fit"
+          className="eyebrow-chip inline-flex items-center gap-2 px-3.5 py-2 rounded-full w-fit"
         >
-          <Terminal className="w-4 h-4 text-accent-primary animate-pulse" />
+          <Sparkles className="w-4 h-4 text-accent-primary" />
           <span className="text-xs font-semibold text-accent-primary tracking-wider uppercase">
-            Open to opportunities
+            Available for meaningful product work
           </span>
         </motion.div>
 
@@ -110,17 +114,19 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold tracking-tight text-text-primary"
+          className="text-5xl sm:text-6xl lg:text-7xl font-display font-extrabold tracking-tight text-text-primary leading-[0.96]"
         >
-          Hi, I'm <span className="text-gradient">Yishaq Damtew</span>
+          Building elegant software with <span className="text-gradient">care and velocity.</span>
         </motion.h1>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="h-8 text-lg sm:text-xl font-medium text-text-secondary"
+          className="h-8 text-lg sm:text-xl font-semibold text-text-secondary"
         >
+          <span className="text-text-primary">Yishaq Damtew</span>
+          <span className="mx-2 text-border-subtle">/</span>
           <span>{displayText}</span>
           <span className="cli-cursor ml-1" />
         </motion.div>
@@ -129,30 +135,50 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-text-secondary font-sans leading-relaxed text-base sm:text-lg max-w-lg"
+          className="text-text-secondary font-sans leading-relaxed text-base sm:text-lg max-w-xl"
         >
-          I am a software engineer focused on building clean, accessible, and high-performance applications. I love transforming complex ideas into simple, elegant digital products.
+          I design and ship clean, accessible, high-performance web apps, turning messy product ideas into calm interfaces, strong systems, and experiences people can trust.
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex flex-wrap gap-4 pt-4"
+          className="flex flex-wrap gap-3 pt-2"
         >
           <button
             onClick={() => handleScrollTo('#projects')}
-            className="flex items-center gap-2 py-3 px-6 bg-accent-primary hover:bg-accent-secondary text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group"
+            className="flex items-center gap-2 py-3 px-5 bg-accent-primary hover:bg-accent-secondary text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group"
           >
             View My Projects
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
           <button
             onClick={() => handleScrollTo('#contact')}
-            className="py-3 px-6 glass-panel text-text-primary font-semibold rounded-xl border border-border-subtle hover:border-text-secondary hover:bg-border-subtle/20 transition-all duration-300 cursor-pointer"
+            className="py-3 px-5 glass-panel text-text-primary font-semibold rounded-xl border border-border-subtle hover:border-text-secondary hover:bg-border-subtle/20 transition-all duration-300 cursor-pointer"
           >
             Contact Me
           </button>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.48 }}
+          className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-xl"
+        >
+          {heroStats.map((stat) => {
+            const Icon = stat.icon;
+            return (
+              <div key={stat.label} className="premium-card glass-panel rounded-xl px-4 py-3">
+                <div className="flex items-center gap-2 text-accent-primary">
+                  <Icon className="w-4 h-4" />
+                  <span className="text-[10px] font-bold uppercase tracking-wider">{stat.label}</span>
+                </div>
+                <p className="mt-1 text-sm font-display font-extrabold text-text-primary">{stat.value}</p>
+              </div>
+            );
+          })}
         </motion.div>
 
         {/* Social Quick-Links */}
@@ -160,7 +186,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.55 }}
-          className="flex items-center gap-4 pt-2"
+          className="flex items-center gap-4 pt-1"
         >
           <span className="text-xs font-semibold text-text-secondary uppercase tracking-wider">Find me on</span>
           <div className="flex items-center gap-2.5">
@@ -204,19 +230,23 @@ export default function Hero() {
       </div>
 
       {/* Right side: Profile Photo + Code Editor Panel */}
-      <div className="w-full md:w-[50%] max-w-lg flex flex-col items-center gap-5 relative z-10">
+      <div className="w-full md:w-[50%] max-w-xl flex flex-col items-center gap-5 relative z-10">
+        <div className="absolute -top-5 right-0 hidden sm:flex items-center gap-2 px-3 py-2 rounded-xl glass-panel text-xs font-mono text-text-secondary">
+          <Terminal className="w-3.5 h-3.5 text-accent-primary" />
+          deploy-ready
+        </div>
 
         {/* Profile Photo Avatar */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.15 }}
-          className="relative"
+          className="relative z-10"
         >
           {/* Outer glow ring */}
-          <div className="absolute -inset-2 rounded-full bg-gradient-to-br from-accent-primary/40 to-accent-secondary/20 blur-lg animate-pulse pointer-events-none" />
+          <div className="absolute -inset-2 rounded-full bg-accent-glow blur-xl pointer-events-none" />
           {/* Photo circle */}
-          <div className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden border-4 border-accent-primary/60 shadow-2xl ring-4 ring-accent-primary/20">
+          <div className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden border-4 border-bg-elevated shadow-2xl ring-2 ring-accent-primary/40">
             <img
               src="/avatar.jpg"
               alt="Yishaq Damtew - Full Stack Developer"
@@ -235,10 +265,10 @@ export default function Hero() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="w-full glass-panel rounded-2xl border border-border-subtle shadow-2xl overflow-hidden flex flex-col h-80"
+          className="w-full hero-panel rounded-3xl border border-border-subtle shadow-2xl overflow-hidden flex flex-col h-[25rem]"
         >
         {/* Editor Toolbar Header */}
-        <div className="flex items-center justify-between px-4 py-3 bg-bg-site/60 border-b border-border-subtle">
+        <div className="relative z-10 flex items-center justify-between px-4 py-3 bg-bg-site/55 border-b border-border-subtle">
           {/* OS Window Actions */}
           <div className="flex items-center space-x-2">
             <span className="w-3 h-3 rounded-full bg-red-400" />
@@ -274,7 +304,7 @@ export default function Hero() {
         </div>
 
         {/* Editor Code Panel Body */}
-        <div className="flex-grow p-6 text-left overflow-y-auto bg-bg-card/45 select-text">
+        <div className="relative z-10 flex-grow p-6 text-left overflow-y-auto bg-bg-card/35 select-text">
           {activeTab === 'Bio.json' && (
             <div className="font-mono text-sm leading-relaxed text-text-primary">
               <span className="text-gray-500 dark:text-gray-600">// Bio.json</span>

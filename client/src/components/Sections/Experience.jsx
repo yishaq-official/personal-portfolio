@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Briefcase, GraduationCap, ChevronDown, ChevronUp, Calendar, Loader2 } from 'lucide-react';
+import { apiUrl } from '../../lib/api.js';
 
 const fallbackExperiences = [
   {
@@ -49,7 +50,7 @@ export default function Experience() {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 3000);
 
-    fetch('http://localhost:5000/api/experience', { signal: controller.signal })
+    fetch(apiUrl('/api/experience'), { signal: controller.signal })
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch experiences API');
         return res.json();
@@ -115,7 +116,7 @@ export default function Experience() {
                 className="relative"
               >
                 {/* Timeline Icon Anchor Node */}
-                <div className="absolute -left-[45px] sm:-left-[53px] top-1.5 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-bg-card border-2 border-accent-primary flex items-center justify-center shadow-md z-10 text-accent-primary">
+                <div className="absolute -left-[45px] sm:-left-[53px] top-1.5 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-bg-elevated border-2 border-accent-primary flex items-center justify-center shadow-md z-10 text-accent-primary">
                   {exp.type === 'work' ? (
                     <Briefcase className="w-4 h-4 sm:w-5 sm:h-5" />
                   ) : (
@@ -126,7 +127,7 @@ export default function Experience() {
                 {/* Experience Card */}
                 <div
                   onClick={() => toggleExpand(exp.id)}
-                  className={`glass-panel p-5 sm:p-6 rounded-2xl border transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer ${
+                  className={`premium-card glass-panel p-5 sm:p-6 rounded-2xl border cursor-pointer ${
                     isExpanded ? 'border-accent-primary/40' : 'border-border-subtle hover:border-accent-primary/50'
                   }`}
                 >

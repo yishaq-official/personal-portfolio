@@ -1,37 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ExternalLink, Code, ChevronLeft, ChevronRight, Check } from 'lucide-react';
 
 export default function ProjectModal({ project, onClose }) {
-  // Return null if modal is closed
-  if (!project) return null;
-
   // Track image carousel index
-  const [imgIdx, setImgIdx] = useState(0);
+  const [carousel, setCarousel] = useState({ projectId: null, index: 0 });
 
   // Close on Escape key press
   useEffect(() => {
+    if (!project) return undefined;
+
     const handleEscape = (e) => {
       if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', handleEscape);
     return () => window.removeEventListener('keydown', handleEscape);
-  }, [onClose]);
+  }, [onClose, project]);
+
+  // Return null if modal is closed
+  if (!project) return null;
 
   const images = project.images || [
     { title: 'Landing Page Preview', gradient: 'from-violet-500 to-indigo-600' },
     { title: 'Dashboard Metrics', gradient: 'from-emerald-500 to-teal-600' },
     { title: 'Mobile Configurator', gradient: 'from-rose-500 to-pink-600' }
   ];
+  const imgIdx = carousel.projectId === project.id ? carousel.index : 0;
+  const setProjectImageIndex = (index) => {
+    setCarousel({ projectId: project.id, index });
+  };
 
   const handleNext = (e) => {
     e.stopPropagation();
-    setImgIdx((prev) => (prev + 1) % images.length);
+    setProjectImageIndex((imgIdx + 1) % images.length);
   };
 
   const handlePrev = (e) => {
     e.stopPropagation();
-    setImgIdx((prev) => (prev - 1 + images.length) % images.length);
+    setProjectImageIndex((imgIdx - 1 + images.length) % images.length);
   };
 
   return (
@@ -110,7 +116,7 @@ export default function ProjectModal({ project, onClose }) {
                 {images.map((_, idx) => (
                   <button
                     key={idx}
-                    onClick={(e) => { e.stopPropagation(); setImgIdx(idx); }}
+                    onClick={(e) => { e.stopPropagation(); setProjectImageIndex(idx); }}
                     className={`w-2 h-2 rounded-full transition-all duration-200 cursor-pointer ${
                       imgIdx === idx ? 'bg-white scale-125' : 'bg-white/40'
                     }`}

@@ -7,6 +7,7 @@
   --color-accent-glow: var(--accent-glow);
   --color-bg-site: var(--bg-site);
   --color-bg-card: var(--bg-card);
+  --color-bg-elevated: var(--bg-elevated);
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-border-subtle: var(--border-subtle);
@@ -20,11 +21,16 @@
    Theme variables & Custom Accents
    ========================================================================== */
 :root {
-  --bg-site: #f8fafc; /* Slate 50 */
-  --bg-card: rgba(255, 255, 255, 0.7);
-  --text-primary: #0f172a; /* Slate 900 */
-  --text-secondary: #475569; /* Slate 600 */
-  --border-subtle: rgba(226, 232, 240, 0.8); /* Slate 200 */
+  --bg-site: #f7f8fb;
+  --bg-card: rgba(255, 255, 255, 0.76);
+  --bg-elevated: rgba(255, 255, 255, 0.9);
+  --text-primary: #101624;
+  --text-secondary: #526071;
+  --border-subtle: rgba(196, 205, 220, 0.72);
+  --surface-highlight: rgba(255, 255, 255, 0.72);
+  --ambient-line: rgba(15, 23, 42, 0.06);
+  --shadow-soft: 0 24px 80px rgba(20, 30, 52, 0.12);
+  --shadow-crisp: 0 12px 32px rgba(20, 30, 52, 0.12);
   
   /* Default: Violet Theme */
   --accent-primary: #8b5cf6;
@@ -33,11 +39,16 @@
 }
 
 html.dark {
-  --bg-site: #080c14; /* Deep premium midnight dark */
-  --bg-card: rgba(15, 23, 42, 0.65); /* Slate 900 base */
-  --text-primary: #f1f5f9; /* Slate 100 */
-  --text-secondary: #94a3b8; /* Slate 400 */
-  --border-subtle: rgba(51, 65, 85, 0.45); /* Slate 700 */
+  --bg-site: #070a12;
+  --bg-card: rgba(12, 18, 31, 0.72);
+  --bg-elevated: rgba(18, 26, 42, 0.88);
+  --text-primary: #f4f7fb;
+  --text-secondary: #a2adbd;
+  --border-subtle: rgba(102, 119, 145, 0.24);
+  --surface-highlight: rgba(255, 255, 255, 0.08);
+  --ambient-line: rgba(255, 255, 255, 0.06);
+  --shadow-soft: 0 32px 100px rgba(0, 0, 0, 0.45);
+  --shadow-crisp: 0 16px 42px rgba(0, 0, 0, 0.36);
   
   /* Default dark: Violet Theme */
   --accent-primary: #a78bfa;
@@ -109,11 +120,22 @@ html.dark[data-accent="violet"] {
    Base Styles & Scrollbar Customization
    ========================================================================== */
 body {
+  background:
+    linear-gradient(115deg, color-mix(in srgb, var(--accent-glow) 55%, transparent) 0%, transparent 28%),
+    linear-gradient(245deg, rgba(20, 184, 166, 0.08) 0%, transparent 30%),
+    linear-gradient(180deg, var(--bg-site) 0%, color-mix(in srgb, var(--bg-site) 88%, #ffffff 12%) 100%);
   background-color: var(--bg-site);
   color: var(--text-primary);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
   overflow-x: hidden;
+}
+
+html.dark body {
+  background:
+    linear-gradient(118deg, color-mix(in srgb, var(--accent-glow) 80%, transparent) 0%, transparent 32%),
+    linear-gradient(248deg, rgba(20, 184, 166, 0.08) 0%, transparent 34%),
+    linear-gradient(180deg, #05070d 0%, var(--bg-site) 52%, #090d16 100%);
 }
 
 /* Scrollbars */
@@ -142,13 +164,92 @@ body {
    ========================================================================== */
 .glass-panel {
   background: var(--bg-card);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
   border: 1px solid var(--border-subtle);
+  box-shadow: inset 0 1px 0 var(--surface-highlight), var(--shadow-crisp);
+}
+
+.app-atmosphere {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(90deg, transparent 0 18px, var(--ambient-line) 18px 19px, transparent 19px 100%),
+    linear-gradient(0deg, transparent 0 18px, var(--ambient-line) 18px 19px, transparent 19px 100%);
+  background-size: 96px 96px;
+  mask-image: linear-gradient(to bottom, black 0%, black 64%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 64%, transparent 100%);
+}
+
+.app-atmosphere::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.44;
+  background:
+    linear-gradient(120deg, transparent 0%, color-mix(in srgb, var(--accent-primary) 18%, transparent) 42%, transparent 72%),
+    repeating-linear-gradient(135deg, transparent 0 20px, rgba(255, 255, 255, 0.035) 20px 21px);
+}
+
+.premium-card {
+  position: relative;
+  isolation: isolate;
+  transition: transform 240ms ease, border-color 240ms ease, box-shadow 240ms ease, background 240ms ease;
+}
+
+.premium-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  opacity: 0;
+  background: linear-gradient(135deg, var(--surface-highlight), transparent 44%, color-mix(in srgb, var(--accent-primary) 12%, transparent));
+  transition: opacity 240ms ease;
+}
+
+.premium-card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--accent-primary) 44%, var(--border-subtle));
+  box-shadow: var(--shadow-soft);
+}
+
+.premium-card:hover::before {
+  opacity: 1;
+}
+
+.hero-panel {
+  position: relative;
+  background:
+    linear-gradient(145deg, var(--bg-elevated), var(--bg-card)),
+    linear-gradient(120deg, color-mix(in srgb, var(--accent-primary) 14%, transparent), transparent);
+  box-shadow: var(--shadow-soft), inset 0 1px 0 var(--surface-highlight);
+}
+
+.hero-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(90deg, transparent 0 11px, var(--ambient-line) 11px 12px),
+    linear-gradient(0deg, transparent 0 11px, var(--ambient-line) 11px 12px);
+  background-size: 24px 24px;
+  opacity: 0.36;
+  mask-image: linear-gradient(to bottom, black, transparent 76%);
+  -webkit-mask-image: linear-gradient(to bottom, black, transparent 76%);
+}
+
+.eyebrow-chip {
+  background: color-mix(in srgb, var(--accent-primary) 10%, var(--bg-elevated));
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 28%, var(--border-subtle));
+  box-shadow: inset 0 1px 0 var(--surface-highlight);
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  background: linear-gradient(120deg, var(--accent-primary), #14b8a6 48%, var(--accent-secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -199,8 +300,8 @@ body {
   background-image: 
     linear-gradient(to right, var(--border-subtle) 1px, transparent 1px),
     linear-gradient(to bottom, var(--border-subtle) 1px, transparent 1px);
-  mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
-  -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+  mask-image: linear-gradient(to bottom, black 0%, black 54%, transparent 92%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 54%, transparent 92%);
   animation: moveMesh 8s linear infinite;
 }
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Header from './Header.jsx';
 import Footer from './Footer.jsx';
 import SettingsPanel from './SettingsPanel.jsx';
@@ -14,14 +14,12 @@ export default function Layout({ children, onOpenAdmin }) {
       {/* Custom Mouse Follower */}
       <CustomCursor />
 
+      <div className="app-atmosphere" />
+
       {/* Moving background mesh overlay */}
       {showParticles && (
-        <div className="absolute inset-0 mesh-grid opacity-25 pointer-events-none z-0" />
+        <div className="absolute inset-0 mesh-grid opacity-20 pointer-events-none z-0" />
       )}
-
-      {/* Floating abstract backdrop glow elements for premium look */}
-      <div className="absolute top-1/4 left-[10%] w-96 h-96 bg-accent-glow rounded-full filter blur-[100px] pointer-events-none z-0 opacity-60" />
-      <div className="absolute bottom-1/3 right-[10%] w-80 h-80 bg-accent-glow rounded-full filter blur-[120px] pointer-events-none z-0 opacity-50" />
 
       {/* Navigation Header */}
       <Header onOpenSettings={() => setSettingsOpen(true)} />

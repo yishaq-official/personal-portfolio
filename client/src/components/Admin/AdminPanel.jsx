@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X,
@@ -12,10 +12,9 @@ import {
   Trash2,
   Edit2,
   CheckCircle,
-  AlertTriangle,
-  ExternalLink,
-  Code
+  AlertTriangle
 } from 'lucide-react';
+import { apiUrl } from '../../lib/api.js';
 
 export default function AdminPanel({ isOpen, onClose }) {
   const [password, setPassword] = useState('');
@@ -63,13 +62,6 @@ export default function AdminPanel({ isOpen, onClose }) {
     description: ''
   });
 
-  // Verify auth token on launch
-  useEffect(() => {
-    if (isOpen && isAuthenticated) {
-      fetchData();
-    }
-  }, [isOpen, isAuthenticated, activeTab]);
-
   const showFeedback = (type, text) => {
     setFeedback({ type, text });
     setTimeout(() => setFeedback({ type: '', text: '' }), 4000);
@@ -82,7 +74,7 @@ export default function AdminPanel({ isOpen, onClose }) {
     setAuthLoading(true);
     setAuthError('');
 
-    fetch('http://localhost:5000/api/auth/login', {
+    fetch(apiUrl('/api/auth/login'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password })
@@ -115,22 +107,22 @@ export default function AdminPanel({ isOpen, onClose }) {
   };
 
   // Fetch lists
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoadingData(true);
     const headers = { 'Authorization': `Bearer ${token}` };
 
     try {
       if (activeTab === 'projects') {
-        const res = await fetch('http://localhost:5000/api/projects');
+        const res = await fetch(apiUrl('/api/projects'));
         const data = await res.json();
         setProjects(Array.isArray(data) ? data : []);
       } else if (activeTab === 'timeline') {
-        const res = await fetch('http://localhost:5000/api/experience');
+        const res = await fetch(apiUrl('/api/experience'));
         const data = await res.json();
         setExperiences(Array.isArray(data) ? data : []);
       } else if (activeTab === 'messages') {
-        const res = await fetch('http://localhost:5000/api/admin/messages', { headers });
-        if (!res.ok) throw new Error('Failed to retrieve messages');
+        const res = await fetch(apiUrl('/api/admin/messages'), { headers });
+        if (!res.ok) throw new Error(`Failed to retrieve messages (${res.status})`);
         const data = await res.json();
         setMessages(Array.isArray(data) ? data : []);
       }
@@ -142,7 +134,20 @@ export default function AdminPanel({ isOpen, onClose }) {
     } finally {
       setLoadingData(false);
     }
-  };
+  }, [activeTab, token]);
+
+  // Verify auth token on launch
+  useEffect(() => {
+    if (isOpen && isAuthenticated) {
+      const timeoutId = window.setTimeout(() => {
+        fetchData();
+      }, 0);
+
+      return () => window.clearTimeout(timeoutId);
+    }
+
+    return undefined;
+  }, [isOpen, isAuthenticated, fetchData]);
 
   // Project CRUD Actions
   const handleOpenProjectForm = (proj = null) => {
@@ -200,8 +205,8 @@ export default function AdminPanel({ isOpen, onClose }) {
     };
 
     const url = editingProject 
-      ? `http://localhost:5000/api/admin/projects/${editingProject.id}`
-      : 'http://localhost:5000/api/admin/projects';
+      ? apiUrl(`/api/admin/projects/${editingProject.id}`)
+      : apiUrl('/api/admin/projects');
     const method = editingProject ? 'PUT' : 'POST';
 
     try {
@@ -229,7 +234,7 @@ export default function AdminPanel({ isOpen, onClose }) {
     setActionLoading(true);
 
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/projects/${id}`, {
+      const res = await fetch(apiUrl(`/api/admin/projects/${id}`), {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -277,8 +282,8 @@ export default function AdminPanel({ isOpen, onClose }) {
     };
 
     const url = editingExperience
-      ? `http://localhost:5000/api/admin/experience/${editingExperience.id}`
-      : 'http://localhost:5000/api/admin/experience';
+      ? apiUrl(`/api/admin/experience/${editingExperience.id}`)
+      : apiUrl('/api/admin/experience');
     const method = editingExperience ? 'PUT' : 'POST';
 
     try {
@@ -306,7 +311,7 @@ export default function AdminPanel({ isOpen, onClose }) {
     setActionLoading(true);
 
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/experience/${id}`, {
+      const res = await fetch(apiUrl(`/api/admin/experience/${id}`), {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -329,7 +334,7 @@ export default function AdminPanel({ isOpen, onClose }) {
     const deleteId = id || index;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/messages/${deleteId}`, {
+      const res = await fetch(apiUrl(`/api/admin/messages/${deleteId}`), {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });

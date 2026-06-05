@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../../context/ThemeContext.jsx';
-import { Terminal as TerminalIcon, ShieldAlert } from 'lucide-react';
+import { Terminal as TerminalIcon } from 'lucide-react';
 
 export default function Terminal({ onAdminTrigger }) {
   const { theme, toggleTheme, accent, changeAccent } = useTheme();
@@ -155,7 +155,7 @@ export default function Terminal({ onAdminTrigger }) {
         }
         break;
 
-      case 'accent':
+      case 'accent': {
         const validAccents = ['violet', 'indigo', 'emerald', 'rose', 'amber'];
         if (validAccents.includes(arg)) {
           changeAccent(arg);
@@ -164,6 +164,7 @@ export default function Terminal({ onAdminTrigger }) {
           outputText = `Usage: accent [violet|indigo|emerald|rose|amber]. Current accent: ${accent}`;
         }
         break;
+      }
 
       case 'clear':
         isClear = true;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, X, Settings, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext.jsx';
 

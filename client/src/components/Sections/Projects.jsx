@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProjectModal from './ProjectModal.jsx';
 import { FolderGit2, ArrowUpRight, Loader2 } from 'lucide-react';
+import { apiUrl } from '../../lib/api.js';
 
 const fallbackProjects = [
   {
@@ -74,7 +75,7 @@ export default function Projects() {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 3000);
 
-    fetch('http://localhost:5000/api/projects', { signal: controller.signal })
+    fetch(apiUrl('/api/projects'), { signal: controller.signal })
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch projects API');
         return res.json();
@@ -117,7 +118,7 @@ export default function Projects() {
         </div>
 
         {/* Filter Navigation */}
-        <div className="flex flex-wrap gap-1.5 p-1.5 bg-bg-card border border-border-subtle rounded-2xl w-fit">
+        <div className="glass-panel flex flex-wrap gap-1.5 p-1.5 rounded-2xl w-fit">
           {filters.map((filter) => (
             <button
               key={filter}
@@ -146,56 +147,58 @@ export default function Projects() {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project, idx) => (
-              <motion.div
-                layout
-                key={project.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.4 }}
-                onClick={() => setSelectedProject(project)}
-                className="group glass-panel border border-border-subtle hover:border-accent-primary rounded-3xl p-6 flex flex-col justify-between h-[340px] cursor-pointer hover:shadow-xl transition-all duration-300 relative overflow-hidden"
-              >
-                {/* Card visual elements */}
-                <div className="absolute top-0 right-0 w-24 h-24 bg-accent-glow rounded-bl-full opacity-0 group-hover:opacity-60 transition-opacity duration-300 pointer-events-none" />
+            {filteredProjects.map((project) => {
+              const previewGradient = project.images?.[0]?.gradient || 'from-violet-500 to-indigo-600';
 
-                <div className="space-y-4">
-                  {/* Header tag */}
-                  <div className="flex justify-between items-center">
-                    <div className="p-2.5 rounded-2xl bg-accent-glow border border-border-subtle text-accent-primary">
-                      <FolderGit2 className="w-5 h-5" />
+              return (
+                <motion.div
+                  layout
+                  key={project.id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.4 }}
+                  onClick={() => setSelectedProject(project)}
+                  className="group premium-card glass-panel border border-border-subtle rounded-2xl flex flex-col justify-between h-[380px] cursor-pointer relative overflow-hidden"
+                >
+                  <div className={`h-28 bg-gradient-to-br ${previewGradient} relative overflow-hidden`}>
+                    <div className="absolute inset-0 bg-black/20" />
+                    <div className="absolute inset-x-0 bottom-0 h-px bg-white/30" />
+                    <div className="absolute left-5 bottom-4 flex items-center gap-2 text-white">
+                      <div className="p-2 rounded-xl bg-white/15 border border-white/20 backdrop-blur">
+                        <FolderGit2 className="w-5 h-5" />
+                      </div>
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider bg-white/15 border border-white/20 py-1 px-2.5 rounded-full backdrop-blur">
+                        {project.category}
+                      </span>
                     </div>
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-text-secondary bg-border-subtle/40 py-1 px-2.5 rounded-full border border-border-subtle">
-                      {project.category}
-                    </span>
                   </div>
 
-                  {/* Content details */}
-                  <div className="space-y-2">
-                    <h3 className="text-xl font-display font-extrabold text-text-primary group-hover:text-accent-primary transition-colors flex items-center gap-1.5">
-                      {project.title}
-                      <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300 text-accent-primary" />
-                    </h3>
-                    <p className="text-text-secondary text-sm font-sans leading-relaxed line-clamp-3">
-                      {project.description}
-                    </p>
-                  </div>
-                </div>
+                  <div className="flex flex-col flex-grow justify-between p-6">
+                    <div className="space-y-3">
+                      <h3 className="text-xl font-display font-extrabold text-text-primary group-hover:text-accent-primary transition-colors flex items-center gap-1.5">
+                        {project.title}
+                        <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300 text-accent-primary" />
+                      </h3>
+                      <p className="text-text-secondary text-sm font-sans leading-relaxed line-clamp-4">
+                        {project.description}
+                      </p>
+                    </div>
 
-                {/* Technologies Badges */}
-                <div className="flex flex-wrap gap-1.5 pt-4 border-t border-border-subtle/40">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2.5 py-0.5 bg-bg-site/80 border border-border-subtle text-text-secondary text-[10px] font-semibold rounded-md uppercase tracking-wider"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
+                    <div className="flex flex-wrap gap-1.5 pt-5 mt-5 border-t border-border-subtle/40">
+                      {project.tags.slice(0, 4).map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2.5 py-1 bg-bg-site/80 border border-border-subtle text-text-secondary text-[10px] font-semibold rounded-md uppercase tracking-wider"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
           </AnimatePresence>
         </motion.div>
       )}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Layout from './components/Layout/Layout.jsx';
 import Hero from './components/Sections/Hero.jsx';
 import About from './components/Sections/About.jsx';
