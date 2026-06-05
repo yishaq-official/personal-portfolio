@@ -2,6 +2,9 @@
   "name": "server",
   "version": "1.0.0",
   "main": "index.js",
+  "engines": {
+    "node": ">=23.10.0"
+  },
   "scripts": {
     "start": "node src/index.js",
     "seed": "node src/seed.js",
@@ -12,7 +15,6 @@
   "description": "",
   "dependencies": {
     "cors": "^2.8.6",
-    "express": "^5.2.1",
-    "mongoose": "^9.6.3"
+    "express": "^5.2.1"
   }
 }

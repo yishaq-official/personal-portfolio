@@ -20,7 +20,7 @@ export default function ProjectModal({ project, onClose }) {
   // Return null if modal is closed
   if (!project) return null;
 
-  const images = project.images || [
+  const images = project.images?.length ? project.images : [
     { title: 'Landing Page Preview', gradient: 'from-violet-500 to-indigo-600' },
     { title: 'Dashboard Metrics', gradient: 'from-emerald-500 to-teal-600' },
     { title: 'Mobile Configurator', gradient: 'from-rose-500 to-pink-600' }
@@ -85,15 +85,33 @@ export default function ProjectModal({ project, onClose }) {
             {/* Image Preview Carousel Box */}
             <div className="w-full h-48 sm:h-64 rounded-2xl overflow-hidden relative group bg-bg-site border border-border-subtle shadow-inner flex items-center justify-center">
               {/* Active Image representation using gradients (clean, fast, consistent fallback) */}
-              <div className={`w-full h-full bg-gradient-to-br ${images[imgIdx].gradient || 'from-indigo-600 to-purple-700'} flex flex-col items-center justify-center p-6 text-center text-white relative`}>
-                <div className="absolute inset-0 bg-black/20 pointer-events-none" />
-                <h4 className="text-lg sm:text-2xl font-display font-extrabold tracking-tight relative z-10">
-                  {images[imgIdx].title || project.title}
-                </h4>
-                <p className="text-xs text-white/80 font-mono mt-1 relative z-10">
-                  Slide {imgIdx + 1} of {images.length}
-                </p>
-              </div>
+              {images[imgIdx].src ? (
+                <div className="w-full h-full relative bg-bg-site">
+                  <img
+                    src={images[imgIdx].src}
+                    alt={images[imgIdx].title || `${project.title} screenshot`}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/70 to-transparent text-white">
+                    <h4 className="text-sm sm:text-lg font-display font-extrabold tracking-tight">
+                      {images[imgIdx].title || project.title}
+                    </h4>
+                    <p className="text-xs text-white/80 font-mono mt-1">
+                      Slide {imgIdx + 1} of {images.length}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className={`w-full h-full bg-gradient-to-br ${images[imgIdx].gradient || 'from-indigo-600 to-purple-700'} flex flex-col items-center justify-center p-6 text-center text-white relative`}>
+                  <div className="absolute inset-0 bg-black/20 pointer-events-none" />
+                  <h4 className="text-lg sm:text-2xl font-display font-extrabold tracking-tight relative z-10">
+                    {images[imgIdx].title || project.title}
+                  </h4>
+                  <p className="text-xs text-white/80 font-mono mt-1 relative z-10">
+                    Slide {imgIdx + 1} of {images.length}
+                  </p>
+                </div>
+              )}
 
               {/* Navigation Arrows */}
               <button

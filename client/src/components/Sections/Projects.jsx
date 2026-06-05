@@ -148,7 +148,8 @@ export default function Projects() {
         >
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project) => {
-              const previewGradient = project.images?.[0]?.gradient || 'from-violet-500 to-indigo-600';
+              const previewImage = project.images?.[0];
+              const previewGradient = previewImage?.gradient || 'from-violet-500 to-indigo-600';
 
               return (
                 <motion.div
@@ -161,7 +162,14 @@ export default function Projects() {
                   onClick={() => setSelectedProject(project)}
                   className="group premium-card glass-panel border border-border-subtle rounded-2xl flex flex-col justify-between h-[380px] cursor-pointer relative overflow-hidden"
                 >
-                  <div className={`h-28 bg-gradient-to-br ${previewGradient} relative overflow-hidden`}>
+                  <div className={`h-28 ${previewImage?.src ? 'bg-bg-site' : `bg-gradient-to-br ${previewGradient}`} relative overflow-hidden`}>
+                    {previewImage?.src && (
+                      <img
+                        src={previewImage.src}
+                        alt={previewImage.title || `${project.title} screenshot`}
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
+                    )}
                     <div className="absolute inset-0 bg-black/20" />
                     <div className="absolute inset-x-0 bottom-0 h-px bg-white/30" />
                     <div className="absolute left-5 bottom-4 flex items-center gap-2 text-white">

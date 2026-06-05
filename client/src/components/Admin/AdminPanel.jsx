@@ -12,9 +12,18 @@ import {
   Trash2,
   Edit2,
   CheckCircle,
-  AlertTriangle
+  AlertTriangle,
+  Download,
+  ImagePlus
 } from 'lucide-react';
 import { apiUrl } from '../../lib/api.js';
+
+const fileToDataUrl = (file) => new Promise((resolve, reject) => {
+  const reader = new FileReader();
+  reader.onload = () => resolve(reader.result);
+  reader.onerror = reject;
+  reader.readAsDataURL(file);
+});
 
 export default function AdminPanel({ isOpen, onClose }) {
   const [password, setPassword] = useState('');
@@ -49,6 +58,7 @@ export default function AdminPanel({ isOpen, onClose }) {
     challenges: '',
     demoUrl: '',
     sourceUrl: '',
+    screenshots: '',
     imageSlides: ''
   });
 
@@ -104,6 +114,32 @@ export default function AdminPanel({ isOpen, onClose }) {
     setProjects([]);
     setExperiences([]);
     setMessages([]);
+  };
+
+  const handleExportData = async () => {
+    setActionLoading(true);
+    try {
+      const res = await fetch(apiUrl('/api/admin/export'), {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error('Failed to export portfolio data');
+
+      const blob = await res.blob();
+      const downloadUrl = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+      link.href = downloadUrl;
+      link.download = `portfolio-backup-${stamp}.json`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(downloadUrl);
+      showFeedback('success', 'Portfolio data export downloaded.');
+    } catch (err) {
+      showFeedback('error', err.message);
+    } finally {
+      setActionLoading(false);
+    }
   };
 
   // Fetch lists
@@ -163,6 +199,9 @@ export default function AdminPanel({ isOpen, onClose }) {
         challenges: proj.challenges || '',
         demoUrl: proj.demoUrl || '',
         sourceUrl: proj.sourceUrl || '',
+        screenshots: Array.isArray(proj.images)
+          ? proj.images.map(img => img.src || '').filter(Boolean).join('\n')
+          : '',
         imageSlides: Array.isArray(proj.images)
           ? proj.images.map(img => img.gradient || '').filter(Boolean).join(', ')
           : ''
@@ -179,6 +218,7 @@ export default function AdminPanel({ isOpen, onClose }) {
         challenges: '',
         demoUrl: '',
         sourceUrl: '',
+        screenshots: '',
         imageSlides: ''
       });
     }
@@ -193,16 +233,23 @@ export default function AdminPanel({ isOpen, onClose }) {
     const slideGradients = projectForm.imageSlides
       ? projectForm.imageSlides.split(',').map(g => g.trim()).filter(Boolean)
       : [];
-    const images = slideGradients.length > 0
-      ? slideGradients.map((gradient, i) => ({ title: `Preview ${i + 1}`, gradient }))
-      : [{ title: 'Workspace Preview', gradient: 'from-violet-500 to-indigo-600' }];
+    const screenshotSources = projectForm.screenshots
+      ? projectForm.screenshots.split('\n').map(src => src.trim()).filter(Boolean)
+      : [];
+    const screenshotImages = screenshotSources.map((src, i) => ({ title: `Screenshot ${i + 1}`, src }));
+    const gradientImages = slideGradients.map((gradient, i) => ({ title: `Preview ${i + 1}`, gradient }));
+    const images = [...screenshotImages, ...gradientImages];
 
     const payload = {
       ...projectForm,
       tags: projectForm.tags.split(',').map(t => t.trim()).filter(Boolean),
       features: projectForm.features.split('\n').map(f => f.trim()).filter(Boolean),
-      images,
+      images: images.length > 0
+        ? images
+        : [{ title: 'Workspace Preview', gradient: 'from-violet-500 to-indigo-600' }],
     };
+    delete payload.screenshots;
+    delete payload.imageSlides;
 
     const url = editingProject 
       ? apiUrl(`/api/admin/projects/${editingProject.id}`)
@@ -226,6 +273,26 @@ export default function AdminPanel({ isOpen, onClose }) {
       showFeedback('error', err.message);
     } finally {
       setActionLoading(false);
+    }
+  };
+
+  const handleScreenshotFiles = async (e) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    setActionLoading(true);
+    try {
+      const dataUrls = await Promise.all(files.map(fileToDataUrl));
+      setProjectForm((prev) => ({
+        ...prev,
+        screenshots: [prev.screenshots, ...dataUrls].filter(Boolean).join('\n')
+      }));
+      showFeedback('success', `${files.length} screenshot${files.length === 1 ? '' : 's'} added to the project form.`);
+    } catch {
+      showFeedback('error', 'Failed to read one or more screenshot files.');
+    } finally {
+      setActionLoading(false);
+      e.target.value = '';
     }
   };
 
@@ -511,6 +578,14 @@ export default function AdminPanel({ isOpen, onClose }) {
                       >
                         <LogOut className="w-3.5 h-3.5" />
                         Lock Console
+                      </button>
+                      <button
+                        onClick={handleExportData}
+                        disabled={actionLoading}
+                        className="flex items-center gap-1.5 py-2 px-4 border border-accent-primary/30 hover:bg-accent-glow text-accent-primary rounded-xl text-xs font-semibold transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                        Export Data
                       </button>
                     </div>
 
@@ -813,6 +888,29 @@ export default function AdminPanel({ isOpen, onClose }) {
                           placeholder="Feature 1&#10;Feature 2"
                           className="w-full bg-bg-site/60 border border-border-subtle focus:border-accent-primary rounded-xl px-3 py-2 text-text-primary text-xs outline-none transition resize-none"
                         />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-semibold text-text-secondary uppercase mb-1.5 select-none">Project Screenshots</label>
+                        <label className="flex items-center justify-center gap-2 w-full bg-bg-site/60 border border-dashed border-border-subtle hover:border-accent-primary rounded-xl px-3 py-4 text-text-secondary hover:text-accent-primary text-xs font-semibold outline-none transition cursor-pointer">
+                          <ImagePlus className="w-4 h-4" />
+                          Upload screenshot image(s)
+                          <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            onChange={handleScreenshotFiles}
+                            className="hidden"
+                          />
+                        </label>
+                        <textarea
+                          rows="3"
+                          value={projectForm.screenshots}
+                          onChange={(e) => setProjectForm({ ...projectForm, screenshots: e.target.value })}
+                          placeholder="Screenshot URLs or uploaded data URLs appear here, one per line"
+                          className="mt-2 w-full bg-bg-site/60 border border-border-subtle focus:border-accent-primary rounded-xl px-3 py-2 text-text-primary text-xs outline-none transition resize-none"
+                        />
+                        <p className="text-[10px] text-text-secondary mt-1 font-mono">Use uploaded files for SQLite storage or paste hosted image URLs, one per line.</p>
                       </div>
 
                       <div>
