@@ -3,6 +3,7 @@ import Layout from './components/Layout/Layout.jsx';
 import Hero from './components/Sections/Hero.jsx';
 import About from './components/Sections/About.jsx';
 import Experience from './components/Sections/Experience.jsx';
+import Terminal from './components/CLI/Terminal.jsx';
 
 function App() {
   return (
@@ -32,12 +33,8 @@ function App() {
           </p>
         </section>
 
-        <section id="terminal" className="w-full max-w-4xl py-16 border-t border-border-subtle text-left">
-          <h2 className="text-3xl font-display font-bold text-text-primary mb-4">Developer CLI</h2>
-          <p className="text-text-secondary leading-relaxed">
-            The interactive simulated terminal shell will be initialized in Phase 4.
-          </p>
-        </section>
+        {/* Terminal CLI Section */}
+        <Terminal />
       </div>
     </Layout>
   );
