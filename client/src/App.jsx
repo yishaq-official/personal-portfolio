@@ -1,67 +1,60 @@
-import { useTheme } from './context/ThemeContext.jsx'
+import React from 'react';
+import Layout from './components/Layout/Layout.jsx';
 
 function App() {
-  const { theme, accent, toggleTheme, changeAccent } = useTheme();
-
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-8 bg-bg-site text-text-primary transition-colors duration-300">
-      {/* Moving background mesh effect to check visuals */}
-      <div className="absolute inset-0 mesh-grid opacity-30 pointer-events-none"></div>
-
-      <div className="glass-panel relative z-10 max-w-md w-full p-8 rounded-2xl shadow-xl flex flex-col items-center text-center space-y-6">
-        <h1 className="text-3xl font-display font-extrabold text-gradient">
-          Developer Portfolio
-        </h1>
+    <Layout>
+      {/* Temporary dummy page content to test scrolling & visual state toggling */}
+      <div className="py-12 flex flex-col items-center justify-center space-y-16 min-h-[140vh]">
         
-        <p className="text-text-secondary font-sans text-sm">
-          Theme Context & Tailwind v4 Configured
-        </p>
-
-        <div className="w-full py-4 px-6 rounded-xl bg-accent-glow border border-border-subtle flex flex-col space-y-2">
-          <p className="text-text-secondary font-sans text-sm flex justify-between">
-            <span>Theme Mode:</span>
-            <span className="font-semibold text-text-primary uppercase">{theme}</span>
+        {/* Hero Section Anchor */}
+        <section id="home" className="w-full flex flex-col items-center justify-center text-center py-24">
+          <h1 className="text-5xl md:text-7xl font-display font-extrabold text-gradient mb-6">
+            John Doe
+          </h1>
+          <p className="text-lg md:text-xl text-text-secondary max-w-2xl font-sans leading-relaxed">
+            A software developer crafting interactive interfaces and robust architectures.
           </p>
-          <p className="text-text-secondary font-sans text-sm flex justify-between">
-            <span>Accent Theme:</span>
-            <span className="font-semibold text-accent-primary uppercase">{accent}</span>
-          </p>
-        </div>
+        </section>
 
-        <button
-          onClick={toggleTheme}
-          className="w-full py-3 px-6 bg-accent-primary hover:bg-accent-secondary text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer"
-        >
-          Toggle {theme === 'light' ? 'Dark' : 'Light'} Mode
-        </button>
-
-        <div className="w-full pt-4 border-t border-border-subtle flex flex-col space-y-3">
-          <p className="text-xs font-semibold text-text-secondary tracking-wider uppercase">
-            Select Accent Theme
+        {/* Dummy sections to verify anchor clicks */}
+        <section id="about" className="w-full max-w-4xl py-16 border-t border-border-subtle">
+          <h2 className="text-3xl font-display font-bold text-text-primary mb-4">About Me</h2>
+          <p className="text-text-secondary leading-relaxed">
+            This is the about section. Scroll down or click the navigation header links to check how the viewport moves smoothly to other areas.
           </p>
-          <div className="flex justify-center space-x-3">
-            {['violet', 'indigo', 'emerald', 'rose', 'amber'].map((color) => (
-              <button
-                key={color}
-                onClick={() => changeAccent(color)}
-                style={{
-                  backgroundColor: 
-                    color === 'violet' ? '#8b5cf6' :
-                    color === 'indigo' ? '#4f46e5' :
-                    color === 'emerald' ? '#059669' :
-                    color === 'rose' ? '#e11d48' : '#d97706'
-                }}
-                className={`w-8 h-8 rounded-full cursor-pointer transition-all duration-200 ${
-                  accent === color ? 'ring-4 ring-offset-2 ring-accent-primary scale-110' : 'hover:scale-105'
-                }`}
-                title={color}
-              />
-            ))}
-          </div>
-        </div>
+        </section>
+
+        <section id="experience" className="w-full max-w-4xl py-16 border-t border-border-subtle">
+          <h2 className="text-3xl font-display font-bold text-text-primary mb-4">Work Experience</h2>
+          <p className="text-text-secondary leading-relaxed">
+            Timeline of employment and academic history will be built here in subsequent phases.
+          </p>
+        </section>
+
+        <section id="projects" className="w-full max-w-4xl py-16 border-t border-border-subtle">
+          <h2 className="text-3xl font-display font-bold text-text-primary mb-4">Selected Work</h2>
+          <p className="text-text-secondary leading-relaxed">
+            Filtered grids of code projects and custom visual overlays go here.
+          </p>
+        </section>
+
+        <section id="contact" className="w-full max-w-4xl py-16 border-t border-border-subtle">
+          <h2 className="text-3xl font-display font-bold text-text-primary mb-4">Get in Touch</h2>
+          <p className="text-text-secondary leading-relaxed">
+            Validating input contact forms with status feedback animations will reside here.
+          </p>
+        </section>
+
+        <section id="terminal" className="w-full max-w-4xl py-16 border-t border-border-subtle">
+          <h2 className="text-3xl font-display font-bold text-text-primary mb-4">Developer CLI</h2>
+          <p className="text-text-secondary leading-relaxed">
+            The interactive simulated terminal shell will be initialized in Phase 4.
+          </p>
+        </section>
       </div>
-    </div>
-  )
+    </Layout>
+  );
 }
 
-export default App
+export default App;

@@ -203,3 +203,11 @@ body {
   -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
   animation: moveMesh 8s linear infinite;
 }
+
+/* Disable default cursor on desktop when custom cursor is active */
+@media (min-width: 768px) {
+  html[data-custom-cursor="true"],
+  html[data-custom-cursor="true"] * {
+    cursor: none !important;
+  }
+}
