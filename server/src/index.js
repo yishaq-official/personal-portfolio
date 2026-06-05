@@ -209,6 +209,277 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
+// 4. Admin Authentication Login
+app.post('/api/auth/login', (req, res) => {
+  const { password } = req.body;
+  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'yishaq123';
+  
+  if (password === ADMIN_PASSWORD) {
+    return res.json({ token: 'yishaq-dev-token-9992384' });
+  }
+  res.status(401).json({ error: 'Invalid administrator password' });
+});
+
+// Admin Authentication Middleware
+const verifyAdmin = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith('Bearer yishaq-dev-token-9992384')) {
+    return next();
+  }
+  res.status(403).json({ error: 'Access denied. Invalid credentials.' });
+};
+
+// 5. Admin CRUD - Projects
+// Create Project
+app.post('/api/admin/projects', verifyAdmin, async (req, res) => {
+  const { title, category, description, fullDescription, tags, features, challenges, images, demoUrl, sourceUrl } = req.body;
+  
+  if (!title || !category || !description) {
+    return res.status(400).json({ error: 'Title, category, and description are required.' });
+  }
+
+  let nextId = 1;
+  if (isInMemoryMode) {
+    if (defaultProjects.length > 0) {
+      nextId = Math.max(...defaultProjects.map(p => p.id)) + 1;
+    }
+    const newProject = {
+      id: nextId,
+      title,
+      category,
+      description,
+      fullDescription: fullDescription || '',
+      tags: tags || [],
+      features: features || [],
+      challenges: challenges || '',
+      images: images || [],
+      demoUrl: demoUrl || '',
+      sourceUrl: sourceUrl || ''
+    };
+    defaultProjects.push(newProject);
+    return res.status(201).json(newProject);
+  }
+
+  try {
+    const lastProject = await Project.findOne().sort({ id: -1 });
+    if (lastProject) {
+      nextId = lastProject.id + 1;
+    }
+    const newProject = new Project({
+      id: nextId,
+      title,
+      category,
+      description,
+      fullDescription,
+      tags,
+      features,
+      challenges,
+      images,
+      demoUrl,
+      sourceUrl
+    });
+    await newProject.save();
+    res.status(201).json(newProject);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to create project' });
+  }
+});
+
+// Update Project
+app.put('/api/admin/projects/:id', verifyAdmin, async (req, res) => {
+  const projectId = parseInt(req.params.id);
+  const { title, category, description, fullDescription, tags, features, challenges, images, demoUrl, sourceUrl } = req.body;
+
+  if (isInMemoryMode) {
+    const idx = defaultProjects.findIndex(p => p.id === projectId);
+    if (idx === -1) return res.status(404).json({ error: 'Project not found' });
+    
+    defaultProjects[idx] = {
+      ...defaultProjects[idx],
+      title: title || defaultProjects[idx].title,
+      category: category || defaultProjects[idx].category,
+      description: description || defaultProjects[idx].description,
+      fullDescription: fullDescription !== undefined ? fullDescription : defaultProjects[idx].fullDescription,
+      tags: tags || defaultProjects[idx].tags,
+      features: features || defaultProjects[idx].features,
+      challenges: challenges !== undefined ? challenges : defaultProjects[idx].challenges,
+      images: images || defaultProjects[idx].images,
+      demoUrl: demoUrl !== undefined ? demoUrl : defaultProjects[idx].demoUrl,
+      sourceUrl: sourceUrl !== undefined ? sourceUrl : defaultProjects[idx].sourceUrl
+    };
+    return res.json(defaultProjects[idx]);
+  }
+
+  try {
+    const updated = await Project.findOneAndUpdate(
+      { id: projectId },
+      { title, category, description, fullDescription, tags, features, challenges, images, demoUrl, sourceUrl },
+      { new: true }
+    );
+    if (!updated) return res.status(404).json({ error: 'Project not found' });
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update project' });
+  }
+});
+
+// Delete Project
+app.delete('/api/admin/projects/:id', verifyAdmin, async (req, res) => {
+  const projectId = parseInt(req.params.id);
+
+  if (isInMemoryMode) {
+    const idx = defaultProjects.findIndex(p => p.id === projectId);
+    if (idx === -1) return res.status(404).json({ error: 'Project not found' });
+    
+    defaultProjects.splice(idx, 1);
+    return res.json({ success: true });
+  }
+
+  try {
+    const deleted = await Project.findOneAndDelete({ id: projectId });
+    if (!deleted) return res.status(404).json({ error: 'Project not found' });
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to delete project' });
+  }
+});
+
+// 6. Admin CRUD - Experience
+// Create Experience
+app.post('/api/admin/experience', verifyAdmin, async (req, res) => {
+  const { type, role, company, duration, description } = req.body;
+  if (!type || !role || !company || !duration) {
+    return res.status(400).json({ error: 'Type, role, company, and duration are required.' });
+  }
+
+  let nextId = 1;
+  if (isInMemoryMode) {
+    if (defaultExperiences.length > 0) {
+      nextId = Math.max(...defaultExperiences.map(e => e.id)) + 1;
+    }
+    const newExp = {
+      id: nextId,
+      type,
+      role,
+      company,
+      duration,
+      description: description || []
+    };
+    defaultExperiences.push(newExp);
+    return res.status(201).json(newExp);
+  }
+
+  try {
+    const lastExp = await Experience.findOne().sort({ id: -1 });
+    if (lastExp) {
+      nextId = lastExp.id + 1;
+    }
+    const newExp = new Experience({
+      id: nextId,
+      type,
+      role,
+      company,
+      duration,
+      description
+    });
+    await newExp.save();
+    res.status(201).json(newExp);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to create experience' });
+  }
+});
+
+// Update Experience
+app.put('/api/admin/experience/:id', verifyAdmin, async (req, res) => {
+  const expId = parseInt(req.params.id);
+  const { type, role, company, duration, description } = req.body;
+
+  if (isInMemoryMode) {
+    const idx = defaultExperiences.findIndex(e => e.id === expId);
+    if (idx === -1) return res.status(404).json({ error: 'Experience not found' });
+    
+    defaultExperiences[idx] = {
+      ...defaultExperiences[idx],
+      type: type || defaultExperiences[idx].type,
+      role: role || defaultExperiences[idx].role,
+      company: company || defaultExperiences[idx].company,
+      duration: duration || defaultExperiences[idx].duration,
+      description: description || defaultExperiences[idx].description
+    };
+    return res.json(defaultExperiences[idx]);
+  }
+
+  try {
+    const updated = await Experience.findOneAndUpdate(
+      { id: expId },
+      { type, role, company, duration, description },
+      { new: true }
+    );
+    if (!updated) return res.status(404).json({ error: 'Experience not found' });
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update experience' });
+  }
+});
+
+// Delete Experience
+app.delete('/api/admin/experience/:id', verifyAdmin, async (req, res) => {
+  const expId = parseInt(req.params.id);
+
+  if (isInMemoryMode) {
+    const idx = defaultExperiences.findIndex(e => e.id === expId);
+    if (idx === -1) return res.status(404).json({ error: 'Experience not found' });
+    
+    defaultExperiences.splice(idx, 1);
+    return res.json({ success: true });
+  }
+
+  try {
+    const deleted = await Experience.findOneAndDelete({ id: expId });
+    if (!deleted) return res.status(404).json({ error: 'Experience not found' });
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to delete experience' });
+  }
+});
+
+// 7. Admin CRUD - Messages Inbox
+// Get Messages
+app.get('/api/admin/messages', verifyAdmin, async (req, res) => {
+  if (isInMemoryMode) {
+    return res.json(inMemoryMessages);
+  }
+
+  try {
+    const list = await Message.find().sort({ createdAt: -1 });
+    res.json(list);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to retrieve messages' });
+  }
+});
+
+// Delete Message
+app.delete('/api/admin/messages/:id', verifyAdmin, async (req, res) => {
+  const msgId = req.params.id;
+
+  if (isInMemoryMode) {
+    const idx = parseInt(msgId);
+    if (isNaN(idx) || idx < 0 || idx >= inMemoryMessages.length) {
+      return res.status(404).json({ error: 'Message not found' });
+    }
+    inMemoryMessages.splice(idx, 1);
+    return res.json({ success: true });
+  }
+
+  try {
+    const deleted = await Message.findByIdAndDelete(msgId);
+    if (!deleted) return res.status(404).json({ error: 'Message not found' });
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to delete message' });
+  }
+});
+
 // Startup Listener
 app.listen(PORT, () => {
   console.log(`Backend Server listening at http://localhost:${PORT}`);

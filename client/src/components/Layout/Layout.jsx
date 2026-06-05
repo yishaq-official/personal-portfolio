@@ -5,7 +5,7 @@ import SettingsPanel from './SettingsPanel.jsx';
 import CustomCursor from '../Common/CustomCursor.jsx';
 import { useTheme } from '../../context/ThemeContext.jsx';
 
-export default function Layout({ children }) {
+export default function Layout({ children, onOpenAdmin }) {
   const { showParticles } = useTheme();
   const [settingsOpen, setSettingsOpen] = useState(false);
 
@@ -32,7 +32,7 @@ export default function Layout({ children }) {
       </main>
 
       {/* Customization Settings Sidebar */}
-      <SettingsPanel isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
+      <SettingsPanel isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} onOpenAdmin={onOpenAdmin} />
 
       {/* Footer */}
       <Footer />

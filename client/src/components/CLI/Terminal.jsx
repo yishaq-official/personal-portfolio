@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../../context/ThemeContext.jsx';
 import { Terminal as TerminalIcon, ShieldAlert } from 'lucide-react';
 
-export default function Terminal() {
+export default function Terminal({ onAdminTrigger }) {
   const { theme, toggleTheme, accent, changeAccent } = useTheme();
   const [inputVal, setInputVal] = useState('');
   
@@ -72,6 +72,7 @@ export default function Terminal() {
               <div><span className="text-accent-secondary font-semibold">theme [light/dark]</span> - Shift website theme</div>
               <div><span className="text-accent-secondary font-semibold">accent [color]</span> - Select new accent</div>
               <div><span className="text-accent-secondary font-semibold">clear</span> - Flush terminal screen</div>
+              <div><span className="text-accent-secondary font-semibold">admin</span> - Access system management</div>
             </div>
           </div>
         );
@@ -138,6 +139,13 @@ export default function Terminal() {
 
       case 'clear':
         isClear = true;
+        break;
+
+      case 'admin':
+        outputText = 'Opening administrative authentication gate...';
+        if (typeof onAdminTrigger === 'function') {
+          setTimeout(() => onAdminTrigger(), 600);
+        }
         break;
 
       default:

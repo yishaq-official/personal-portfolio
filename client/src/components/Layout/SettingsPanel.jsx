@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Sun, Moon, Eye, EyeOff, LayoutGrid, Sparkles } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext.jsx';
 
-export default function SettingsPanel({ isOpen, onClose }) {
+export default function SettingsPanel({ isOpen, onClose, onOpenAdmin }) {
   const {
     theme,
     accent,
@@ -181,6 +181,20 @@ export default function SettingsPanel({ isOpen, onClose }) {
                       />
                     </button>
                   </div>
+                </div>
+
+                {/* Admin Portal Button */}
+                <div className="pt-4 border-t border-border-subtle">
+                  <button
+                    onClick={() => {
+                      onClose();
+                      onOpenAdmin();
+                    }}
+                    className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-bg-site/60 hover:bg-accent-glow text-text-primary border border-border-subtle hover:border-accent-border/30 rounded-xl text-xs font-semibold shadow-sm transition-all duration-200 cursor-pointer"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-accent-primary animate-pulse" />
+                    Manage System (Admin)
+                  </button>
                 </div>
               </div>
             </div>
