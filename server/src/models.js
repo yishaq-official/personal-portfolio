@@ -136,18 +136,20 @@ function initDatabase() {
 
 function migrateOldDefaultExperiences() {
   const current = listExperiences();
-  const hasOriginalSeedData = current.some((experience) => (
-    experience.id === 1
-    && experience.company === 'Velo Tech Solutions'
-  )) && current.some((experience) => (
-    experience.id === 3
-    && experience.company === 'State Tech University'
-  ));
+  const placeholderCompanies = new Set([
+    'Velo Tech Solutions',
+    'Apex Code Labs',
+    'Apex Code Studio',
+    'State Tech University'
+  ]);
 
-  if (!hasOriginalSeedData) return;
+  current.forEach((experience) => {
+    if (!placeholderCompanies.has(experience.company)) return;
 
-  defaultExperiences.forEach((experience) => {
-    updateExperience(experience.id, experience);
+    const replacement = defaultExperiences.find((item) => item.id === experience.id);
+    if (replacement) {
+      updateExperience(experience.id, replacement);
+    }
   });
 }
 

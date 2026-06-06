@@ -42,6 +42,17 @@ const fallbackExperiences = [
   }
 ];
 
+const oldPlaceholderCompanies = new Set([
+  'Velo Tech Solutions',
+  'Apex Code Labs',
+  'Apex Code Studio',
+  'State Tech University'
+]);
+
+const isOldPlaceholderTimeline = (items) => (
+  items.some((item) => oldPlaceholderCompanies.has(item.company))
+);
+
 export default function Experience() {
   const [experiences, setExperiences] = useState(fallbackExperiences);
   const [loading, setLoading] = useState(true);
@@ -57,7 +68,7 @@ export default function Experience() {
       })
       .then((data) => {
         clearTimeout(timeoutId);
-        if (Array.isArray(data) && data.length > 0) {
+        if (Array.isArray(data) && data.length > 0 && !isOldPlaceholderTimeline(data)) {
           setExperiences(data);
         }
         setLoading(false);
