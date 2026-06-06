@@ -11,7 +11,7 @@ const phrases = [
 const heroStats = [
   { label: 'Experience', value: '3+ yrs', icon: Gauge },
   { label: 'Projects', value: '20+', icon: Layers3 },
-  { label: 'Base', value: 'Addis Ababa', icon: MapPin },
+  { label: 'Base', value: 'Debre Birhan', icon: MapPin },
 ];
 
 export default function Hero() {
@@ -96,6 +96,7 @@ export default function Hero() {
       id="home"
       className="relative w-full py-16 md:py-24 lg:py-28 flex flex-col md:flex-row items-center justify-between gap-12 lg:gap-16"
     >
+    
       {/* Left side: Tagline & CTAs */}
       <div className="w-full md:w-[50%] flex flex-col space-y-7 text-left">
         <motion.div
@@ -216,7 +217,7 @@ export default function Hero() {
               </svg>
             </a>
             <a
-              href="mailto:yishaq.damtew@gmail.com"
+              href="mailto:yishaq.official@gmail.com"
               title="Email"
               className="p-2 rounded-xl border border-border-subtle hover:border-accent-primary bg-bg-card hover:bg-accent-glow text-text-secondary hover:text-accent-primary transition-all duration-200 group"
             >

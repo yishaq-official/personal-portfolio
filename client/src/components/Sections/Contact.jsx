@@ -12,7 +12,7 @@ export default function Contact() {
 
   // Copy Email Helper
   const handleCopyEmail = () => {
-    navigator.clipboard.writeText('yishaq.damtew@gmail.com');
+    navigator.clipboard.writeText('yishaq.official@gmail.com');
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -140,7 +140,7 @@ export default function Contact() {
               </div>
               <div className="flex-grow min-w-0">
                 <p className="text-xs font-semibold text-text-secondary uppercase tracking-wider">Email Me</p>
-                <p className="text-sm sm:text-base font-mono font-semibold text-text-primary truncate">yishaq.damtew@gmail.com</p>
+                <p className="text-sm sm:text-base font-mono font-semibold text-text-primary truncate">yishaq.official@gmail.com</p>
               </div>
               <button
                 onClick={handleCopyEmail}
@@ -158,7 +158,7 @@ export default function Contact() {
               </div>
               <div>
                 <p className="text-xs font-semibold text-text-secondary uppercase tracking-wider">Location</p>
-                <p className="text-sm sm:text-base font-semibold text-text-primary">Addis Ababa, Ethiopia</p>
+                <p className="text-sm sm:text-base font-semibold text-text-primary">Debre Birhan, Ethiopia</p>
               </div>
             </div>
           </div>

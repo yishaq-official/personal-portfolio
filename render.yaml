@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: yishaq-portfolio-api
+    runtime: node
+    rootDir: server
+    plan: starter
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    disk:
+      name: portfolio-sqlite-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: 23.10.0
+      - key: SQLITE_DATA_DIR
+        value: /var/data
+      - key: CORS_ORIGIN
+        value: https://yishaq-portfolio.vercel.app
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ADMIN_TOKEN
+        generateValue: true

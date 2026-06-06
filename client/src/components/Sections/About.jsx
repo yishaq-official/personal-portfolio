@@ -22,13 +22,13 @@ export default function About() {
       { name: 'Node.js / Express', level: 80 },
       { name: 'PostgreSQL / SQL', level: 75 },
       { name: 'REST & GraphQL APIs', level: 85 },
-      { name: 'Python', level: 70 },
+      { name: 'Python', level: 80 },
     ],
     Tools: [
       { name: 'Git / GitHub', level: 90 },
-      { name: 'Docker / Containers', level: 70 },
-      { name: 'Linux OS / Bash', level: 80 },
-      { name: 'Figma / UI Design', level: 75 },
+      { name: 'Docker / Containers', level: 75 },
+      { name: 'Linux OS / Bash', level: 90 },
+      { name: 'Figma / UI Design', level: 85 },
     ],
     Cloud: [
       { name: 'AWS (EC2, S3, Lambda)', level: 65 },

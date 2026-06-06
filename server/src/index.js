@@ -57,6 +57,8 @@ const validateContact = ({ name, email, message }) => {
   return errors;
 };
 
+
+
 app.get('/api/health', (req, res) => {
   res.json({ ok: true, database: 'sqlite', path: DB_PATH });
 });

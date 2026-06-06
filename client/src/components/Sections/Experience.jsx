@@ -8,7 +8,7 @@ const fallbackExperiences = [
     id: 1,
     type: 'work',
     role: 'Full Stack Developer',
-    company: 'Velo Tech Solutions',
+    company: 'Self',
     duration: '2025 - Present',
     description: [
       'Design and maintain scalable React applications, utilizing React 19 and modern Vite bundling configurations.',
@@ -20,8 +20,8 @@ const fallbackExperiences = [
     id: 2,
     type: 'work',
     role: 'Frontend Developer Intern',
-    company: 'Apex Code Studio',
-    duration: '2023 - 2024',
+    company: 'Codveda technologies',
+    duration: '2025',
     description: [
       'Developed responsive landing pages and interactive data dashboard widgets for client applications.',
       'Refactored legacy design files into highly reusable Tailwind CSS classes, increasing page performance.',
@@ -31,13 +31,13 @@ const fallbackExperiences = [
   {
     id: 3,
     type: 'education',
-    role: 'B.S. Computer Science',
-    company: 'State Tech University',
-    duration: '2020 - 2024',
+    role: 'B.S. Software Engineering',
+    company: 'Debre Berhan University',
+    duration: '2023/24 - 2027/28',
     description: [
-      'Graduated with Honors. Specialized in Software Engineering and Database Design systems.',
-      'President of the Student Web Development club; mentored 30+ juniors in JavaScript frameworks.',
-      'Won 2nd place in the annual university Hackathon with a real-time collaborative map application.'
+      'Specialized in Software Engineering and Database Design systems.',
+      'Build scalable and AI integrated software solutions. ',
+      'real world projects in different fields like AI, Desktop App developement and scalable web developement. '
     ]
   }
 ];

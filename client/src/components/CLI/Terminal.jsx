@@ -74,7 +74,7 @@ export default function Terminal({ onAdminTrigger }) {
               <div><span className="text-accent-secondary font-semibold">theme [light/dark]</span> - Shift website theme</div>
               <div><span className="text-accent-secondary font-semibold">accent [color]</span> - Select new accent</div>
               <div><span className="text-accent-secondary font-semibold">clear</span> - Flush terminal screen</div>
-              <div><span className="text-accent-secondary font-semibold">admin</span> - Access system management</div>
+              {/* <div><span className="text-accent-secondary font-semibold">admin</span> - Access system management</div>*/}
             </div>
           </div>
         );
@@ -90,8 +90,8 @@ export default function Terminal({ onAdminTrigger }) {
             <p>=========================================</p>
             <p className="text-accent-primary font-bold">TECHNICAL SKILLSET:</p>
             <p>-----------------------------------------</p>
-            <p><span className="text-accent-secondary">Frontend:</span>   React 19, TypeScript, Tailwind v4</p>
-            <p><span className="text-accent-secondary">Backend:</span>    Node.js, Express, PostgreSQL</p>
+            <p><span className="text-accent-secondary">Frontend:</span>   React 19, JavaScript, Tailwind v4</p>
+            <p><span className="text-accent-secondary">Backend:</span>    Node.js, Express, PostgreSQL, Laravel, Flask</p>
             <p><span className="text-accent-secondary">DevOps:</span>     Git, Docker, Bash scripting</p>
             <p>=========================================</p>
           </div>
@@ -101,9 +101,9 @@ export default function Terminal({ onAdminTrigger }) {
       case 'experience':
         outputText = (
           <div className="space-y-1">
-            <p><span className="text-accent-primary font-semibold">* Full Stack Developer</span> @ Velo Tech (2025-Present)</p>
-            <p><span className="text-accent-primary font-semibold">* Frontend Intern</span> @ Apex Code (2023-2024)</p>
-            <p><span className="text-accent-primary font-semibold">* B.S. Computer Science</span> @ State Tech Univ (2020-2024)</p>
+            <p><span className="text-accent-primary font-semibold">* Full Stack Developer</span> @ self (2025-Present)</p>
+            <p><span className="text-accent-primary font-semibold">* Frontend Intern</span> @ codveda Technologies (2023-2028)</p>
+            <p><span className="text-accent-primary font-semibold">* B.S. Software Engineering(in Progress)</span> @ Debre Berhan Univ (2023-2028)</p>
           </div>
         );
         break;
@@ -111,9 +111,10 @@ export default function Terminal({ onAdminTrigger }) {
       case 'contact':
         outputText = (
           <div className="space-y-1">
-            <p><span className="text-accent-secondary">Email:</span>    yishaq.damtew@gmail.com</p>
-            <p><span className="text-accent-secondary">GitHub:</span>   github.com/yishaq</p>
-            <p><span className="text-accent-secondary">LinkedIn:</span> linkedin.com/in/yishaq</p>
+            <p><span className="text-accent-secondary">Email:</span>    yishaq.official@gmail.com</p>
+            <p><span className="text-accent-secondary">GitHub:</span>   github.com/yishaq-official</p>
+            <p><span className="text-accent-secondary">LinkedIn:</span> linkedin.com/in/yishaq-damtew-
+            734108361</p>
           </div>
         );
         break;
@@ -138,7 +139,7 @@ export default function Terminal({ onAdminTrigger }) {
           <div className="space-y-1">
             <p className="text-accent-primary font-bold">Resume / CV:</p>
             <p className="text-text-secondary text-sm">Contact me directly to request the latest version:</p>
-            <p><span className="text-accent-secondary">Email:</span> yishaq.damtew@gmail.com</p>
+            <p><span className="text-accent-secondary">Email:</span> yishaq.official@gmail.com</p>
             <p className="text-text-secondary text-xs pt-1">Or visit the Contact section below to send a direct message.</p>
           </div>
         );
