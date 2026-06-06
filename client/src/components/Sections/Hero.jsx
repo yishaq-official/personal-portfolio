@@ -52,15 +52,15 @@ export default function Hero() {
     'Bio.json': `{
   "name": "Yishaq Damtew",
   "title": "Full Stack Engineer",
-  "location": "Addis Ababa, Ethiopia",
+  "location": "Debre Birhan, Ethiopia",
   "experience": "3+ Years",
   "openToWork": true,
   "motto": "Build clean, solve complex."
 }`,
     'Skills.js': `const developer = {
-  languages: ["JS", "TS", "Python", "SQL"],
+  languages: ["JS", "PHP", JAVA, C++, "Python", "SQL"],
   frontend: ["React 19", "Vite", "Tailwind v4"],
-  backend: ["Node", "PostgreSQL", "Docker"],
+  backend: ["Node", "Laravel", "PostgreSQL", "Docker", "flask", "spring boot"],
   learning: "Rust & WebAssembly"
 };`,
     'Interests.yml': `interests:

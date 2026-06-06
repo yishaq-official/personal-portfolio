@@ -36,8 +36,8 @@ const fallbackExperiences = [
     duration: '2023/24 - 2027/28',
     description: [
       'Specialized in Software Engineering and Database Design systems.',
-      'Build scalable and AI integrated software solutions. ',
-      'real world projects in different fields like AI, Desktop App developement and scalable web developement. '
+      'Build scalable and AI integrated software solutions.',
+      'Real world projects in different fields like AI, desktop app development, and scalable web development.'
     ]
   }
 ];

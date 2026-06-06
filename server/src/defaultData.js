@@ -62,33 +62,36 @@ const defaultExperiences = [
     id: 1,
     type: 'work',
     role: 'Full Stack Developer',
-    company: 'Velo Tech Solutions',
+    company: 'Self',
     duration: '2025 - Present',
     description: [
-      'Engineered responsive interface dashboards using React 19, custom CSS modules, and Tailwind v4 core tokens.',
-      'Constructed scalable Node.js API servers optimizing database schema indexing and query routines.'
+      'Design and maintain scalable React applications, utilizing React 19 and modern Vite bundling configurations.',
+      'Develop PostgreSQL database schemas and write optimized SQL queries for Express API servers.',
+      'Implement Docker containers for local staging and automate CI/CD pipeline deployments.'
     ]
   },
   {
     id: 2,
     type: 'work',
-    role: 'Frontend Intern',
-    company: 'Apex Code Labs',
-    duration: '2023 - 2024',
+    role: 'Frontend Developer Intern',
+    company: 'Codveda technologies',
+    duration: '2025',
     description: [
-      'Developed pixel-perfect interactive pages translating design files under strict speed benchmarks.',
-      'Integrated external REST services and localized device state stores using standard React hooks.'
+      'Developed responsive landing pages and interactive data dashboard widgets for client applications.',
+      'Refactored legacy design files into highly reusable Tailwind CSS classes, increasing page performance.',
+      'Collaborated with design teams in Figma to translate mockups directly into pixel-perfect React components.'
     ]
   },
   {
     id: 3,
     type: 'education',
-    role: 'B.S. Computer Science',
-    company: 'State Tech University',
-    duration: '2020 - 2024',
+    role: 'B.S. Software Engineering',
+    company: 'Debre Berhan University',
+    duration: '2023/24 - 2027/28',
     description: [
-      'Graduated with honors focusing study tracks on software engineering practices, compiler design, and databases.',
-      'Developed interactive multi-threaded networking tools for peer-to-peer file synchronization as a thesis project.'
+      'Specialized in Software Engineering and Database Design systems.',
+      'Build scalable and AI integrated software solutions.',
+      'Real world projects in different fields like AI, desktop app development, and scalable web development.'
     ]
   }
 ];

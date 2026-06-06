@@ -129,7 +129,26 @@ function initDatabase() {
   const experiencesCount = db.prepare('SELECT COUNT(*) AS count FROM experiences').get().count;
   if (experiencesCount === 0) {
     defaultExperiences.forEach((experience) => createExperience(experience, experience.id));
+  } else {
+    migrateOldDefaultExperiences();
   }
+}
+
+function migrateOldDefaultExperiences() {
+  const current = listExperiences();
+  const hasOriginalSeedData = current.some((experience) => (
+    experience.id === 1
+    && experience.company === 'Velo Tech Solutions'
+  )) && current.some((experience) => (
+    experience.id === 3
+    && experience.company === 'State Tech University'
+  ));
+
+  if (!hasOriginalSeedData) return;
+
+  defaultExperiences.forEach((experience) => {
+    updateExperience(experience.id, experience);
+  });
 }
 
 function listProjects() {

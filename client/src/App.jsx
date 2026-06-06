@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Layout from './components/Layout/Layout.jsx';
 import Hero from './components/Sections/Hero.jsx';
 import About from './components/Sections/About.jsx';
@@ -10,6 +10,16 @@ import AdminPanel from './components/Admin/AdminPanel.jsx';
 
 function App() {
   const [adminOpen, setAdminOpen] = useState(false);
+
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
+    if (!window.location.hash) {
+      window.requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }));
+    }
+  }, []);
 
   return (
     <Layout onOpenAdmin={() => setAdminOpen(true)}>
