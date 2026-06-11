@@ -52,8 +52,8 @@ export default function SettingsPanel({ isOpen, onClose, onOpenAdmin }) {
 
               {/* Options */}
               <div className="py-6 space-y-6">
-                {/* Theme Selector */}
-                <div className="space-y-3">
+                {/* Theme Selector (Desktop only) */}
+                <div className="hidden md:block space-y-3">
                   <h3 className="text-xs font-semibold uppercase text-text-secondary tracking-wider">
                     Interface Theme
                   </h3>

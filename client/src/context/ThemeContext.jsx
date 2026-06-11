@@ -6,6 +6,7 @@ const ThemeContext = createContext();
 export function ThemeProvider({ children }) {
   // Retrieve initial values from localStorage or defaults
   const [theme, setTheme] = useState(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 768) return 'light';
     const stored = localStorage.getItem('portfolio-theme');
     if (stored) return stored;
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -13,6 +14,16 @@ export function ThemeProvider({ children }) {
     }
     return 'light';
   });
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setTheme('light');
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const [accent, setAccent] = useState(() => {
     return localStorage.getItem('portfolio-accent') || 'violet';
@@ -56,7 +67,9 @@ export function ThemeProvider({ children }) {
   }, [showParticles]);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+    if (window.innerWidth >= 768) {
+      setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+    }
   };
 
   const changeAccent = (newAccent) => {

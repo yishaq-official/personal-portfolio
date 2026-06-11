@@ -59,7 +59,7 @@ export default function About() {
           </p>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-3 gap-4 pt-4">
+          <div className="grid grid-cols-3 gap-2 sm:gap-4 pt-4">
             {stats.map((stat, idx) => (
               <motion.div
                 key={stat.label}
@@ -92,7 +92,7 @@ export default function About() {
             </h3>
             
             {/* Category Tab selectors */}
-            <div className="glass-panel flex space-x-1 p-1 rounded-xl">
+            <div className="glass-panel flex space-x-1 p-1 rounded-xl overflow-x-auto whitespace-nowrap scrollbar-hide">
               {Object.keys(skillsData).map((cat) => (
                 <button
                   key={cat}

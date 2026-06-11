@@ -72,6 +72,7 @@ export default function Terminal({ onAdminTrigger }) {
               <div><span className="text-accent-secondary font-semibold">contact</span> - direct links &amp; profiles</div>
               <div><span className="text-accent-secondary font-semibold">resume</span> - Download resume hint</div>
               <div><span className="text-accent-secondary font-semibold">theme [light/dark]</span> - Shift website theme</div>
+
               <div><span className="text-accent-secondary font-semibold">accent [color]</span> - Select new accent</div>
               <div><span className="text-accent-secondary font-semibold">clear</span> - Flush terminal screen</div>
               {/* <div><span className="text-accent-secondary font-semibold">admin</span> - Access system management</div>*/}
@@ -147,16 +148,18 @@ export default function Terminal({ onAdminTrigger }) {
 
       case 'theme':
         if (arg === 'light' || arg === 'dark') {
-          if (arg !== theme) {
+          if (window.innerWidth < 768) {
+            outputText = `Theme toggle disabled on mobile viewports.`;
+          } else if (arg !== theme) {
             toggleTheme();
+            outputText = `Theme changed to: ${arg}`;
+          } else {
+            outputText = `Theme is already: ${arg}`;
           }
-          outputText = `Theme changed to: ${arg}`;
         } else {
           outputText = `Usage: theme [light|dark]. Current theme: ${theme}`;
         }
-        break;
-
-      case 'accent': {
+        break;      case 'accent': {
         const validAccents = ['violet', 'indigo', 'emerald', 'rose', 'amber'];
         if (validAccents.includes(arg)) {
           changeAccent(arg);

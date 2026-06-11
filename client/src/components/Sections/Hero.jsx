@@ -278,7 +278,7 @@ export default function Hero() {
           </div>
 
           {/* Editor Tabs List */}
-          <div className="flex items-center space-x-1">
+          <div className="flex items-center space-x-1 overflow-x-auto whitespace-nowrap scrollbar-hide">
             {Object.keys(rawCodeContent).map((tabName) => (
               <button
                 key={tabName}
@@ -305,7 +305,7 @@ export default function Hero() {
         </div>
 
         {/* Editor Code Panel Body */}
-        <div className="relative z-10 flex-grow p-6 text-left overflow-y-auto bg-bg-card/35 select-text">
+        <div className="relative z-10 flex-grow p-6 text-left overflow-y-auto overflow-x-auto bg-bg-card/35 select-text">
           {activeTab === 'Bio.json' && (
             <div className="font-mono text-sm leading-relaxed text-text-primary">
               <span className="text-gray-500 dark:text-gray-600">// Bio.json</span>

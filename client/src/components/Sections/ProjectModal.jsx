@@ -42,7 +42,7 @@ export default function ProjectModal({ project, onClose }) {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[2000] flex items-center justify-center p-4">
+      <div className="fixed inset-0 z-[2000] flex items-center justify-center p-0 sm:p-4">
         {/* Semi-transparent Backdrop overlay */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -58,7 +58,7 @@ export default function ProjectModal({ project, onClose }) {
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.95, opacity: 0, y: 15 }}
           transition={{ type: 'spring', damping: 25, stiffness: 280 }}
-          className="w-full max-w-3xl max-h-[90vh] bg-bg-card border border-border-subtle rounded-3xl shadow-2xl overflow-hidden flex flex-col relative z-10"
+          className="w-full h-[100dvh] sm:h-auto max-w-3xl sm:max-h-[90vh] bg-bg-card border-0 sm:border border-border-subtle rounded-none sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col relative z-10"
         >
           {/* Header */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-border-subtle/40 bg-bg-site/30">
